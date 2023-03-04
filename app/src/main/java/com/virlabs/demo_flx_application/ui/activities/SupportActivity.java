@@ -26,8 +26,6 @@ import com.virlabs.demo_flx_application.api.apiRest;
 import com.virlabs.demo_flx_application.entity.ApiResponse;
 
 public class SupportActivity extends AppCompatActivity {
-
-
     private TextInputEditText support_input_email;
     private TextInputEditText support_input_message;
     private TextInputEditText support_input_name;
@@ -36,7 +34,6 @@ public class SupportActivity extends AppCompatActivity {
     private TextInputLayout support_input_layout_name;
     private RelativeLayout relative_layout_support_activity_send;
     private ProgressDialog register_progress;
-    private String message = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +43,20 @@ public class SupportActivity extends AppCompatActivity {
 
         initView();
         initAction();
-        message = getIntent().getStringExtra("message");
-        if(message!= null){
+        String message = getIntent().getStringExtra("message");
+        if(message != null){
             support_input_message.setText(message);
         }
     }
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        return;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                super.onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

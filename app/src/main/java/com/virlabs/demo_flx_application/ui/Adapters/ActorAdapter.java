@@ -20,8 +20,8 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ActorAdapter  extends  RecyclerView.Adapter<ActorAdapter.ActorHolder>{
-        private List<Actor> actorList;
-        private Activity activity;
+        private final List<Actor> actorList;
+        private final Activity activity;
         public ActorAdapter(List<Actor> actorList, Activity activity) {
             this.actorList = actorList;
             this.activity = activity;
@@ -29,8 +29,7 @@ public class ActorAdapter  extends  RecyclerView.Adapter<ActorAdapter.ActorHolde
         @Override
         public ActorHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_actor , null);
-            ActorHolder mh = new ActorHolder(v);
-            return mh;
+            return new ActorHolder(v);
         }
         @Override
         public void onBindViewHolder(ActorHolder holder, final int position) {

@@ -15,17 +15,15 @@ import java.util.List;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CountryAdapter extends  RecyclerView.Adapter<CountryAdapter.CountryHolder>{
-    private List<Country> countriesList;
-    private Activity activity;
-    public CountryAdapter(List<Country> countriesList, Activity activity) {
+    private final List<Country> countriesList;
+
+    public CountryAdapter(List<Country> countriesList) {
         this.countriesList = countriesList;
-        this.activity = activity;
     }
     @Override
     public CountryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_country , null);
-        CountryHolder mh = new CountryHolder(v);
-        return mh;
+        return new CountryHolder(v);
     }
     @Override
     public void onBindViewHolder(CountryHolder holder, final int position) {

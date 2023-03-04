@@ -57,7 +57,6 @@ import java.util.List;
  */
 
 public class CustomPlayerFragment extends Fragment {
-
     private static String videoKind;
     private CustomPlayerViewModel mCustomPlayerViewModel;
     private PlayerView mSimpleExoPlayerView;
@@ -315,11 +314,7 @@ public class CustomPlayerFragment extends Fragment {
             }
         });
         this.image_view_exo_player_forward_10.setOnClickListener(v -> {
-            if ((mCustomPlayerViewModel.mExoPlayer.getCurrentPosition() + 10000 ) > mCustomPlayerViewModel.mExoPlayer.getDuration() ) {
-                mCustomPlayerViewModel.mExoPlayer.seekTo(mCustomPlayerViewModel.mExoPlayer.getDuration());
-            }else{
-                mCustomPlayerViewModel.mExoPlayer.seekTo(mCustomPlayerViewModel.mExoPlayer.getCurrentPosition() + 10000);
-            }
+            mCustomPlayerViewModel.mExoPlayer.seekTo(Math.min((mCustomPlayerViewModel.mExoPlayer.getCurrentPosition() + 10000), mCustomPlayerViewModel.mExoPlayer.getDuration()));
         });
         this.image_view_exo_player_replay_10.setOnClickListener(v -> {
             if (mCustomPlayerViewModel.mExoPlayer.getCurrentPosition()<10000) {
@@ -410,17 +405,14 @@ public class CustomPlayerFragment extends Fragment {
                     relative_layout_subtitles_dialog.setVisibility(View.VISIBLE);
             }
         });
-        this.image_view_exo_player_subtitles.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCustomPlayerViewModel.pause();
-                if (relative_layout_subtitles_dialog.getVisibility() ==  View.VISIBLE)
-                    relative_layout_subtitles_dialog.setVisibility(View.GONE);
-                else
-                    relative_layout_subtitles_dialog.setVisibility(View.VISIBLE);
+        this.image_view_exo_player_subtitles.setOnClickListener(v -> {
+            mCustomPlayerViewModel.pause();
+            if (relative_layout_subtitles_dialog.getVisibility() ==  View.VISIBLE)
+                relative_layout_subtitles_dialog.setVisibility(View.GONE);
+            else
+                relative_layout_subtitles_dialog.setVisibility(View.VISIBLE);
 
-                //mCustomPlayerViewModel.preparePlayer("https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/tracks/GoogleIO-2014-CastingToTheFuture2-en.vtt");
-            }
+            //mCustomPlayerViewModel.preparePlayer("https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/tracks/GoogleIO-2014-CastingToTheFuture2-en.vtt");
         });
         this.image_view_dialog_source_close.setOnClickListener(v->{
             mCustomPlayerViewModel.play();
@@ -437,7 +429,7 @@ public class CustomPlayerFragment extends Fragment {
             subtitles.get(0).setSelected(true);
             for (int i = 0; i < subtitles.size(); i++) {
                 if(subtitles.get(i).getSelected()!=null) {
-                    if (subtitles.get(i).getSelected() == true) {
+                    if (subtitles.get(i).getSelected()) {
                         currentSubtitle = subtitles.get(i);
                     }
                 }
@@ -455,7 +447,7 @@ public class CustomPlayerFragment extends Fragment {
                 subtitles.get(0).setSelected(true);
                 for (int i = 0; i < subtitles.size(); i++) {
                     if (subtitles.get(i).getSelected() != null) {
-                        if (subtitles.get(i).getSelected() == true) {
+                        if (subtitles.get(i).getSelected()) {
                             currentSubtitle = subtitles.get(i);
                         }
                     }
@@ -475,7 +467,7 @@ public class CustomPlayerFragment extends Fragment {
     }
     private void setUpMediaRouteButton() {
         androidx.mediarouter.app.MediaRouteButton mediaRouteButton = view.findViewById(R.id.media_route_button);
-        CastButtonFactory.setUpMediaRouteButton(getActivity().getApplicationContext(),mediaRouteButton);
+        CastButtonFactory.setUpMediaRouteButton(requireContext(),mediaRouteButton);
         done =  true;
     }
 
@@ -536,19 +528,14 @@ public class CustomPlayerFragment extends Fragment {
 
     @Nullable
     private Bundle getUrlExtra() {
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            return bundle;
-        }
-        return null;
+        return getArguments();
     }
     public class LanguageAdapter extends  RecyclerView.Adapter<LanguageAdapter.LanguageHolder>{
 
         @Override
         public LanguageHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_language ,parent, false);
-            LanguageHolder mh = new LanguageHolder(v);
-            return mh;
+            return new LanguageHolder(v);
         }
         @Override
         public void onBindViewHolder(LanguageHolder holder, final int position) {
@@ -583,9 +570,7 @@ public class CustomPlayerFragment extends Fragment {
                 languages.get(position).setSelected(true);
                 notifyDataSetChanged();
                 subtitles.clear();
-                for (int i = 0; i <  languages.get(position).getSubtitles().size(); i++) {
-                    subtitles.add(languages.get(position).getSubtitles().get(i));
-                }
+                subtitles.addAll(languages.get(position).getSubtitles());
                 selectedLanguage =languages.get(position).getId();
                 subtitleAdapter.notifyDataSetChanged();
             });
@@ -614,8 +599,7 @@ public class CustomPlayerFragment extends Fragment {
         @Override
         public SubtitleHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subtitle ,parent, false);
-            SubtitleHolder mh = new SubtitleHolder(v);
-            return mh;
+            return new SubtitleHolder(v);
         }
         @Override
         public void onBindViewHolder(SubtitleHolder holder, final int position) {

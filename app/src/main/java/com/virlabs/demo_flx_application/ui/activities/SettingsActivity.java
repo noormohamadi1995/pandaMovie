@@ -177,26 +177,6 @@ public class SettingsActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
         });
     }
-
-    public  void printHashKey(Context pContext) {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String hashKey = new String(Base64.encode(md.digest(), 0));
-                Log.i("HASKEY", "printHashKey() Hash Key: " + hashKey);
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("haskey", hashKey);
-                clipboard.setPrimaryClip(clip);
-                Toasty.info(getApplicationContext(),"haskey has been copied",Toast.LENGTH_SHORT).show();
-            }
-        } catch (NoSuchAlgorithmException e) {
-            Log.e("HASKEY", "printHashKey()", e);
-        } catch (Exception e) {
-            Log.e("HASKEY", "printHashKey()", e);
-        }
-    }
     private void initView() {
         this.text_view_dialog_source_size_text= (TextView) findViewById(R.id.text_view_dialog_source_size_text);
         this.relative_layout_dialog_source_text_color_picker= (RelativeLayout) findViewById(R.id.relative_layout_dialog_source_text_color_picker);
@@ -215,15 +195,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        return;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                super.onBackPressed();
-                return true;
+        // Respond to the action bar's Up/Home button
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -231,14 +209,14 @@ public class SettingsActivity extends AppCompatActivity {
         try {
             File dir = context.getCacheDir();
             deleteDir(dir);
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
     }
 
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                boolean success = deleteDir(new File(dir, children[i]));
+            for (String child : children) {
+                boolean success = deleteDir(new File(dir, child));
                 if (!success) {
                     return false;
                 }
@@ -280,11 +258,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void setValues() {
-        if (prf.getString("notifications").equals("false")){
-            this.switch_button_notification.setChecked(false);
-        }else{
-            this.switch_button_notification.setChecked(true);
-        }
+        this.switch_button_notification.setChecked(!prf.getString("notifications").equals("false"));
         try {
             PackageInfo pInfo =getPackageManager().getPackageInfo(getPackageName(),0);
             String version = pInfo.versionName;
@@ -309,11 +283,7 @@ public class SettingsActivity extends AppCompatActivity {
         }else{
             prf.setInt("subtitle_text_size",textSiz);
         }
-        if (prf.getString("subtitle_enabled").equals("TRUE")) {
-            switch_button_subtitle.setChecked(true);
-        }else{
-            switch_button_subtitle.setChecked(false);
-        }
+        switch_button_subtitle.setChecked(prf.getString("subtitle_enabled").equals("TRUE"));
         relative_layout_dialog_source_background_color_picker.setBackgroundColor(backrgoundColor);
         relative_layout_dialog_source_text_color_picker.setBackgroundColor(textColor);
         text_view_dialog_source_size_text.setText(textSiz+" pt");

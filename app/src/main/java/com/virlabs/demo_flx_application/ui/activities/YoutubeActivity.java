@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 
 public class YoutubeActivity extends YouTubeBaseActivity {
 
-    private YouTubePlayerView video_youtube_player;
-    private YouTubePlayer.OnInitializedListener onInitializedListinner;
     private  String youtubeUrl;
     private YouTubePlayer youTubePlayer;
 
@@ -27,22 +25,22 @@ public class YoutubeActivity extends YouTubeBaseActivity {
         Bundle bundle = getIntent().getExtras() ;
         youtubeUrl = bundle.getString("url");
 
-        this.video_youtube_player =(YouTubePlayerView) findViewById(R.id.video_youtube_player);
-        this.onInitializedListinner =  new YouTubePlayer.OnInitializedListener(){
+        YouTubePlayerView video_youtube_player = (YouTubePlayerView) findViewById(R.id.video_youtube_player);
+        YouTubePlayer.OnInitializedListener onInitializedListinner = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer_, boolean b) {
-                youTubePlayer= youTubePlayer_;
-                if (savedInstanceState!=null){
-                    youTubePlayer.loadVideo(new YouTubeHelper().extractVideoIdFromUrl(youtubeUrl),savedInstanceState.getInt("current"));
-                }else{
+                youTubePlayer = youTubePlayer_;
+                if (savedInstanceState != null) {
+                    youTubePlayer.loadVideo(new YouTubeHelper().extractVideoIdFromUrl(youtubeUrl), savedInstanceState.getInt("current"));
+                } else {
                     youTubePlayer.setFullscreen(true);
                     youTubePlayer.loadVideo(new YouTubeHelper().extractVideoIdFromUrl(youtubeUrl));
                 }
 
                 youTubePlayer.setOnFullscreenListener(v -> {
-                    if (v){
+                    if (v) {
                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    }else{
+                    } else {
                         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
                     }
@@ -54,7 +52,7 @@ public class YoutubeActivity extends YouTubeBaseActivity {
 
             }
         };
-        video_youtube_player.initialize(Global.Youtube_Key,onInitializedListinner);
+        video_youtube_player.initialize(Global.Youtube_Key, onInitializedListinner);
     }
     public class YouTubeHelper {
 

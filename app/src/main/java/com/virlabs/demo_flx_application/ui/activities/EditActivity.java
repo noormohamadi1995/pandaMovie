@@ -132,12 +132,10 @@ public class EditActivity extends AppCompatActivity implements  ProgressRequestB
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
-                    SelectImage();
-                }
-                return;
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                SelectImage();
             }
         }
     }

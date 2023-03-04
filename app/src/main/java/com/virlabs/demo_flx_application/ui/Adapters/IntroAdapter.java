@@ -12,12 +12,13 @@ import com.virlabs.demo_flx_application.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class IntroAdapter extends PagerAdapter {
-    private List<Integer> audioList =new ArrayList<Integer>();
-    private Context mContext;
+    private List<Integer> audioList;
+    private final Context mContext;
 
     public IntroAdapter(Context mContext, List<Integer> stringList) {
         this.audioList = stringList;
@@ -31,8 +32,9 @@ public class IntroAdapter extends PagerAdapter {
         return audioList.size();
     }
 
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater layoutInflater = (LayoutInflater)this.mContext.getSystemService(this.mContext.LAYOUT_INFLATER_SERVICE);
 
         View view = layoutInflater.inflate(R.layout.item_slide_1, container, false);

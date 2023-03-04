@@ -2,19 +2,6 @@ package com.virlabs.demo_flx_application.ui.fragments;
 
 
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +11,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.virlabs.demo_flx_application.Provider.PrefManager;
 import com.virlabs.demo_flx_application.R;
@@ -36,6 +29,11 @@ import com.virlabs.demo_flx_application.ui.Adapters.ChannelAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class TvFragment extends Fragment {
     private View view;
@@ -72,7 +70,6 @@ public class TvFragment extends Fragment {
     private boolean firstLoadCountries = true;
     private boolean firstLoadCategories = true;
     private boolean loaded = false;
-    private PrefManager prefManager;
 
 
     public TvFragment() {
@@ -100,7 +97,6 @@ public class TvFragment extends Fragment {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_tv, container, false);
         channelList.add(new Channel().setTypeView(2));
-        prefManager= new PrefManager(requireContext());
 
         initView();
         initActon();
@@ -305,11 +301,11 @@ public class TvFragment extends Fragment {
         this.relative_layout_frament_channel_countries = (RelativeLayout) view.findViewById(R.id.relative_layout_frament_channel_countries);
         this.relative_layout_frament_channel_categories = (RelativeLayout) view.findViewById(R.id.relative_layout_frament_channel_categories);
 
-        this.gridLayoutManager=  new GridLayoutManager(getActivity().getApplicationContext(),2,RecyclerView.VERTICAL,false);
+        this.gridLayoutManager=  new GridLayoutManager(requireContext(),2,RecyclerView.VERTICAL,false);
 
         adapter = new ChannelAdapter(channelList,getActivity());
         if (tabletSize) {
-            this.gridLayoutManager=  new GridLayoutManager(getActivity().getApplicationContext(),4,RecyclerView.VERTICAL,false);
+            this.gridLayoutManager=  new GridLayoutManager(requireContext(),4,RecyclerView.VERTICAL,false);
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
@@ -317,7 +313,7 @@ public class TvFragment extends Fragment {
                 }
             });
         } else {
-            this.gridLayoutManager=  new GridLayoutManager(getActivity().getApplicationContext(),2,RecyclerView.VERTICAL,false);
+            this.gridLayoutManager=  new GridLayoutManager(requireContext(),2,RecyclerView.VERTICAL,false);
             gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {

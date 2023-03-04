@@ -50,10 +50,8 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
     private LinearLayout linear_layout_load_downloads_fragment;
     private ImageView image_view_empty_list;
     private RecyclerView recycler_view_downloads_fragment;
-    private List<DownloadItem> downloadItemArrayList = new ArrayList<>();
-    private GridLayoutManager gridLayoutManager;
+    private final List<DownloadItem> downloadItemArrayList = new ArrayList<>();
     private DownloadedAdapter downloadedAdapter;
-    private DownloadItem downloadItem;
 
     public DownloadsFragment() {
     }
@@ -81,9 +79,7 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
             my_downloads_list = new ArrayList<>();
         }
         downloadItemArrayList.add(new DownloadItem().setTypeView(2));
-        for (int i = 0; i < my_downloads_list.size(); i++) {
-            downloadItemArrayList.add(my_downloads_list.get(i));
-        }
+        downloadItemArrayList.addAll(my_downloads_list);
         if (my_downloads_list.size()==0){
             linear_layout_load_downloads_fragment.setVisibility(View.GONE);
             recycler_view_downloads_fragment.setVisibility(View.GONE);
@@ -112,7 +108,7 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
         this.image_view_empty_list = (ImageView) view.findViewById(R.id.image_view_empty_list);
         this.recycler_view_downloads_fragment = (RecyclerView) view.findViewById(R.id.recycler_view_downloads_fragment);
 
-        this.gridLayoutManager=  new GridLayoutManager(getActivity().getApplicationContext(),1,RecyclerView.VERTICAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 1, RecyclerView.VERTICAL, false);
 
 
         this.downloadedAdapter =new DownloadedAdapter(downloadItemArrayList,getActivity(),this);
@@ -126,7 +122,7 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
         loadDownloadsList();
     }
     private String getIpAccess() {
-        WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) requireContext().getApplicationContext().getSystemService(WIFI_SERVICE);
         int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
         final String formatedIpAddress = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
         return "http://" + formatedIpAddress + ":";
@@ -139,11 +135,8 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
     public boolean isConnectedInWifi() {
         WifiManager wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(WIFI_SERVICE);
         NetworkInfo networkInfo = ((ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected()
-                && wifiManager.isWifiEnabled() && networkInfo.getTypeName().equals("WIFI")) {
-            return true;
-        }
-        return false;
+        return networkInfo != null && networkInfo.isAvailable() && networkInfo.isConnected()
+                && wifiManager.isWifiEnabled() && networkInfo.getTypeName().equals("WIFI");
     }
 
     private boolean startAndroidWebServer(String url) {
@@ -179,11 +172,10 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
             public void onReceive(Context context, Intent intent) {
             }
         };
-        getActivity().registerReceiver(broadcastReceiverNetworkState, filters);
+        requireActivity().registerReceiver(broadcastReceiverNetworkState, filters);
     }
     @Override
     public void OnPlay(DownloadItem downloadItem) {
-        this.downloadItem =downloadItem;
 
         if (isConnectedInWifi()) {
             if (!isStarted && startAndroidWebServer(downloadItem.getPath())) {
@@ -198,7 +190,7 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
                 intent1.putExtra("image",downloadItem.getImage());
                 intent1.putExtra("title",downloadItem.getTitle());
                 intent1.putExtra("subtitle",downloadItem.getTitle());
-                getActivity().startActivity(intent1);
+                requireActivity().startActivity(intent1);
                 isStarted = true;
             } else if (stopAndroidWebServer()) {
                 isStarted = false;
@@ -215,7 +207,7 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
             intent.putExtra("image",downloadItem.getImage());
             intent.putExtra("title",downloadItem.getTitle());
             intent.putExtra("subtitle",downloadItem.getTitle());
-            getActivity().startActivity(intent);
+            requireActivity().startActivity(intent);
         }
     }
 
@@ -228,7 +220,7 @@ public class DownloadsFragment extends Fragment  implements DownloadedAdapter.Do
 
     @Override
     public void onDestroy() {
-        getActivity().unregisterReceiver(broadcastReceiverNetworkState);
+        requireActivity().unregisterReceiver(broadcastReceiverNetworkState);
 
         super.onDestroy();
     }

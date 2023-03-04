@@ -123,16 +123,13 @@ public class CashActivity extends AppCompatActivity  implements  ProgressRequest
         }
     }
     private void initAction() {
-        this.payButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!validatName(text_input_editor_text_activity_cash_trans,text_input_layout_activity_cash_trans))
-                    return;
-                if(!validatName(text_input_editor_text_activity_cash_infos,text_input_layout_activity_cash_infos))
-                    return;
+        this.payButton.setOnClickListener(v -> {
+            if(!validatName(text_input_editor_text_activity_cash_trans,text_input_layout_activity_cash_trans))
+                return;
+            if(!validatName(text_input_editor_text_activity_cash_infos,text_input_layout_activity_cash_infos))
+                return;
 
-                submit(text_input_editor_text_activity_cash_trans.getText().toString(),text_input_editor_text_activity_cash_infos.getText().toString());
-            }
+            submit(text_input_editor_text_activity_cash_trans.getText().toString(),text_input_editor_text_activity_cash_infos.getText().toString());
         });
         this.select_file.setOnClickListener(v -> {
             SelectImage();
@@ -160,12 +157,10 @@ public class CashActivity extends AppCompatActivity  implements  ProgressRequest
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 0: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ) {
-                    SelectImage();
-                }
-                return;
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                SelectImage();
             }
         }
     }

@@ -36,23 +36,12 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 public class PlayerActivity extends AppCompatActivity {
-
-
-    private CastContext mCastContext;
     private SessionManager mSessionManager;
     private CastSession mCastSession;
     private final SessionManagerListener mSessionManagerListener =
             new SessionManagerListenerImpl();
     private ScaleGestureDetector mScaleGestureDetector;
-    private CustomPlayerFragment customPlayerFragment;
     private String videoUrl;
-    private Boolean isLive = false;
-    private String videoType;
-    private String videoTitle;
-    private String videoImage;
-    private String videoSubTile;
-    private int vodeoId ;
-    private String videoKind;
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
@@ -144,21 +133,19 @@ public class PlayerActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
-        mCastContext = CastContext.getSharedInstance(this);
         Bundle bundle = getIntent().getExtras() ;
-        vodeoId = bundle.getInt("id");
+        int vodeoId = bundle.getInt("id");
         videoUrl = bundle.getString("url");
-        videoKind = bundle.getString("kind");
-        isLive = bundle.getBoolean("isLive");
-        videoType = bundle.getString("type");
-        videoTitle = bundle.getString("title");
-        videoSubTile = bundle.getString("subtitle");
-        videoImage = bundle.getString("image");
+        String videoKind = bundle.getString("kind");
+        Boolean isLive = bundle.getBoolean("isLive");
+        String videoType = bundle.getString("type");
+        String videoTitle = bundle.getString("title");
+        String videoSubTile = bundle.getString("subtitle");
+        String videoImage = bundle.getString("image");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (savedInstanceState == null) {
-            customPlayerFragment =
-                    CustomPlayerFragment.newInstance(getVideoUrl(),isLive,videoType,videoTitle,videoSubTile,videoImage,vodeoId,videoKind);
+            CustomPlayerFragment customPlayerFragment = CustomPlayerFragment.newInstance(getVideoUrl(), isLive, videoType, videoTitle, videoSubTile, videoImage, vodeoId, videoKind);
             launchFragment(customPlayerFragment);
         }
 

@@ -110,7 +110,7 @@ public class SplashActivity extends AppCompatActivity {
     }
     private void checkAccount() {
 
-        Integer version = -1;
+        int version = -1;
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
             version = pInfo.versionCode;
@@ -118,7 +118,7 @@ public class SplashActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (version!=-1){
-            Integer id_user = 0;
+            int id_user = 0;
             if (prf.getString("LOGGED").toString().equals("TRUE")) {
                  id_user = Integer.parseInt(prf.getString("ID_USER"));
             }

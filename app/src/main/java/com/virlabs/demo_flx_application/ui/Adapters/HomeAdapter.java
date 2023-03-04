@@ -32,8 +32,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-
     private final Activity activity;
     private final List<Data> dataList;
     private int slide_count = 0;

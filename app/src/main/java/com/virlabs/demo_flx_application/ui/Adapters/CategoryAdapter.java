@@ -1,30 +1,27 @@
 package com.virlabs.demo_flx_application.ui.Adapters;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.virlabs.demo_flx_application.R;
 import com.virlabs.demo_flx_application.entity.Category;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 public class CategoryAdapter extends  RecyclerView.Adapter<CategoryAdapter.CategoryHolder>{
-    private List<Category> categoriesList;
-    private Activity activity;
-    public CategoryAdapter(List<Category> categoriesList, Activity activity) {
+    private final List<Category> categoriesList;
+
+    public CategoryAdapter(List<Category> categoriesList) {
         this.categoriesList = categoriesList;
-        this.activity = activity;
     }
     @Override
     public CategoryHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_catergory , null);
-        CategoryHolder mh = new CategoryHolder(v);
-        return mh;
+        return new CategoryHolder(v);
     }
     @Override
     public void onBindViewHolder(CategoryHolder holder, final int position) {

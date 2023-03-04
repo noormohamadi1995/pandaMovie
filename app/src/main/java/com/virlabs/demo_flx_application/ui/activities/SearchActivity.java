@@ -47,18 +47,10 @@ public class SearchActivity extends AppCompatActivity {
     ArrayList<Channel> channelArrayList = new ArrayList<>();
     private LinearLayout linear_layout_load_search_activity;
 
-    private Integer lines_beetween_ads = 2 ;
-    private boolean tabletSize;
-    private Boolean native_ads_enabled = false ;
-    private int type_ads = 0;
-    private PrefManager prefManager;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        prefManager= new PrefManager(getApplicationContext());
 
         initView();
         initAction();
@@ -66,10 +58,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        if (checkSUBSCRIBED()) {
-            native_ads_enabled=false;
-        }
-
         Bundle bundle = getIntent().getExtras() ;
         this.query =  bundle.getString("query");
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -91,6 +79,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void loadPosters() {
         swipe_refresh_layout_list_search_search.setRefreshing(false);
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
         Retrofit retrofit = apiClient.getClient();
         apiRest service = retrofit.create(apiRest.class);
         Call<Data> call = service.searchData(query);

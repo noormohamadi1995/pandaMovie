@@ -244,8 +244,6 @@ public class GenreActivity extends AppCompatActivity {
 
     private void initView() {
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
-        checkSUBSCRIBED();
-
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle(genre.getTitle());
         setSupportActionBar(toolbar);

@@ -40,7 +40,7 @@ public class SeriesFragment extends Fragment {
     private RelativeLayout card_view_series_fragement_filtres_layout;
     private ImageView image_view_series_fragement_close_filtres;
     private AppCompatSpinner spinner_fragement_series_orders_list;
-    private List<Genre> genreList =  new ArrayList<>();
+    private final List<Genre> genreList =  new ArrayList<>();
     private AppCompatSpinner spinner_fragement_series_genre_list;
     private RelativeLayout relative_layout_frament_series_genres;
     private RecyclerView recycler_view_series_fragment;
@@ -53,7 +53,7 @@ public class SeriesFragment extends Fragment {
 
     private GridLayoutManager gridLayoutManager;
     private PosterAdapter adapter;
-    private List<Poster> movieList =  new ArrayList<>();
+    private final List<Poster> movieList =  new ArrayList<>();
 
     private int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
@@ -257,10 +257,7 @@ public class SeriesFragment extends Fragment {
         });
     }
     public boolean checkSUBSCRIBED(){
-        if (!prefManager.getString("SUBSCRIBED").equals("TRUE") && !prefManager.getString("NEW_SUBSCRIBE_ENABLED").equals("TRUE")) {
-            return false;
-        }
-        return true;
+        return prefManager.getString("SUBSCRIBED").equals("TRUE") || prefManager.getString("NEW_SUBSCRIBE_ENABLED").equals("TRUE");
     }
     private void initView() {
 

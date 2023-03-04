@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,15 +33,10 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 
 public class PosterAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Poster> posterList;
+    private final List<Poster> posterList;
     private List<Channel> channelList;
-    private Activity activity;
+    private final Activity activity;
     private Boolean deletable = false;
-    private LinearLayoutManager linearLayoutManagerChannelAdapter;
-    private ChannelAdapter channelAdapter;
-    private Integer position_selected;
-    private Integer code_selected;
-    private View view_selected;
 
     public PosterAdapter(List<Poster> posterList,List<Channel> channelList, Activity activity) {
         this.posterList = posterList;
@@ -62,6 +58,7 @@ public class PosterAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.activity = activity;
         this.deletable = deletable;
     }
+    @NonNull
     @Override
     public  RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -136,9 +133,6 @@ public class PosterAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     final Intent intent1 = intent;
 
                     activity.startActivity(intent1, activityOptionsCompat.toBundle());
-                    /*if(checkSUBSCRIBED()){
-                        activity.startActivity(intent1, activityOptionsCompat.toBundle());
-                    }*/
                 });
                 holder.image_view_item_poster_delete.setOnClickListener(v->{
                     final PrefManager prefManager = new PrefManager(activity);
@@ -171,8 +165,8 @@ public class PosterAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 break;
             case 3:
                 final ChannelsHolder holder_channel = (ChannelsHolder) viewHolder;
-                this.linearLayoutManagerChannelAdapter=  new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
-                this.channelAdapter =new ChannelAdapter(channelList,activity,deletable);
+                LinearLayoutManager linearLayoutManagerChannelAdapter = new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false);
+                ChannelAdapter channelAdapter = new ChannelAdapter(channelList, activity, deletable);
                 holder_channel.recycle_view_channels_item.setHasFixedSize(true);
                 holder_channel.recycle_view_channels_item.setAdapter(channelAdapter);
                 holder_channel.recycle_view_channels_item.setLayoutManager(linearLayoutManagerChannelAdapter);
@@ -188,7 +182,7 @@ public class PosterAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public class PosterHolder extends RecyclerView.ViewHolder {
         private final TextView text_view_item_poster_label;
         private final TextView text_view_item_poster_sub_label;
-        private ImageView image_view_item_poster_delete;
+        private final ImageView image_view_item_poster_delete;
         public ImageView image_view_item_poster_image ;
         public RelativeLayout relative_layout_item_poster_delete ;
         public PosterHolder(View itemView) {

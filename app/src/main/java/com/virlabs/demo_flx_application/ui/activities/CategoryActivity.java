@@ -77,23 +77,20 @@ public class CategoryActivity extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
-        return;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                if (from!=null){
-                    Intent intent =  new Intent(getApplicationContext(),HomeActivity.class);
-                    startActivity(intent);
-                }else{
-                    super.onBackPressed();
-                }
-                return true;
-
+        // Respond to the action bar's Up/Home button
+        if (item.getItemId() == android.R.id.home) {
+            if (from != null) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            } else {
+                super.onBackPressed();
             }
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -112,9 +109,7 @@ public class CategoryActivity extends AppCompatActivity {
             public void onResponse(Call<List<Channel>> call, final Response<List<Channel>> response) {
                 if (response.isSuccessful()){
                     if (response.body().size()>0){
-                        for (int i = 0; i < response.body().size(); i++) {
-                            posterArrayList.add(response.body().get(i));
-                        }
+                        posterArrayList.addAll(response.body());
                         linear_layout_layout_error.setVisibility(View.GONE);
                         recycler_view_activity_category.setVisibility(View.VISIBLE);
                         image_view_empty_list.setVisibility(View.GONE);
@@ -153,19 +148,13 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     private void initAction() {
-
-
-
-        swipe_refresh_layout_list_category_search.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                item = 0;
-                page = 0;
-                loading = true;
-                posterArrayList.clear();
-                adapter.notifyDataSetChanged();
-                loadChannels();
-            }
+        swipe_refresh_layout_list_category_search.setOnRefreshListener(() -> {
+            item = 0;
+            page = 0;
+            loading = true;
+            posterArrayList.clear();
+            adapter.notifyDataSetChanged();
+            loadChannels();
         });
         button_try_again.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,7 +174,6 @@ public class CategoryActivity extends AppCompatActivity {
             {
                 if(dy > 0) //check for scroll down
                 {
-
                     visibleItemCount    = gridLayoutManager.getChildCount();
                     totalItemCount      = gridLayoutManager.getItemCount();
                     pastVisiblesItems   = gridLayoutManager.findFirstVisibleItemPosition();

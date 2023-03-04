@@ -27,15 +27,13 @@ import java.util.List;
 import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ChannelAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private  Boolean deletable = false;
     private final List<Channel> channelList;
     private final Activity activity;
-    private Integer position_selected;
-    private Integer code_selected;
-    private View view_selected;
 
 
     public ChannelAdapter(List<Channel> channelList, Activity activity) {
@@ -69,77 +67,70 @@ public class ChannelAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHold
     }
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int position) {
-        switch (getItemViewType(position)) {
-            case 1:
-                final ChannelHolder holder = (ChannelHolder) viewHolder;
+        if (getItemViewType(position) == 1) {
+            final ChannelHolder holder = (ChannelHolder) viewHolder;
 
-                if (deletable)
-                    holder.relative_layout_item_channel_delete.setVisibility(View.VISIBLE);
-                else
-                    holder.relative_layout_item_channel_delete.setVisibility(View.GONE);
+            if (deletable)
+                holder.relative_layout_item_channel_delete.setVisibility(View.VISIBLE);
+            else
+                holder.relative_layout_item_channel_delete.setVisibility(View.GONE);
 
-                if (channelList.get(position).getLabel() != null){
-                    if (channelList.get(position).getLabel().length()>0) {
-                        holder.text_view_item_channel_label.setText(channelList.get(position).getLabel());
-                        holder.text_view_item_channel_label.setVisibility(View.VISIBLE);
-                    }else{
-                        holder.text_view_item_channel_label.setVisibility(View.GONE);
-                    }
-                }else{
+            if (channelList.get(position).getLabel() != null) {
+                if (channelList.get(position).getLabel().length() > 0) {
+                    holder.text_view_item_channel_label.setText(channelList.get(position).getLabel());
+                    holder.text_view_item_channel_label.setVisibility(View.VISIBLE);
+                } else {
                     holder.text_view_item_channel_label.setVisibility(View.GONE);
                 }
+            } else {
+                holder.text_view_item_channel_label.setVisibility(View.GONE);
+            }
 
 
-                if (channelList.get(position).getSublabel() != null){
-                    if (channelList.get(position).getSublabel().length()>0) {
-                        holder.text_view_item_channel_sub_label.setText(channelList.get(position).getSublabel());
-                        holder.text_view_item_channel_sub_label.setVisibility(View.VISIBLE);
-                    }else{
-                        holder.text_view_item_channel_sub_label.setVisibility(View.GONE);
-                    }
-                }else{
+            if (channelList.get(position).getSublabel() != null) {
+                if (channelList.get(position).getSublabel().length() > 0) {
+                    holder.text_view_item_channel_sub_label.setText(channelList.get(position).getSublabel());
+                    holder.text_view_item_channel_sub_label.setVisibility(View.VISIBLE);
+                } else {
                     holder.text_view_item_channel_sub_label.setVisibility(View.GONE);
                 }
-                holder.image_view_item_channel_delete.setOnClickListener(v->{
-                    final PrefManager prefManager = new PrefManager(activity);
-                    Integer id_user=  Integer.parseInt(prefManager.getString("ID_USER"));
-                    String   key_user=  prefManager.getString("TOKEN_USER");
-                    Retrofit retrofit = apiClient.getClient();
-                    apiRest service = retrofit.create(apiRest.class);
-                    Call<Integer> call = service.AddMyList(channelList.get(position).getId(),id_user,key_user,"channel");
-                    call.enqueue(new Callback<Integer>() {
-                        @Override
-                        public void onResponse(Call<Integer> call, retrofit2.Response<Integer> response) {
-                            if (response.isSuccessful()){
-                                if (response.body() == 202){
-                                    Toasty.warning(activity, "This channel has been removed from your list", Toast.LENGTH_SHORT).show();
-                                }
+            } else {
+                holder.text_view_item_channel_sub_label.setVisibility(View.GONE);
+            }
+            holder.image_view_item_channel_delete.setOnClickListener(v -> {
+                final PrefManager prefManager = new PrefManager(activity);
+                Integer id_user = Integer.parseInt(prefManager.getString("ID_USER"));
+                String key_user = prefManager.getString("TOKEN_USER");
+                Retrofit retrofit = apiClient.getClient();
+                apiRest service = retrofit.create(apiRest.class);
+                Call<Integer> call = service.AddMyList(channelList.get(position).getId(), id_user, key_user, "channel");
+                call.enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body() == 202) {
+                                Toasty.warning(activity, "This channel has been removed from your list", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        @Override
-                        public void onFailure(Call<Integer> call, Throwable t) {
-                        }
-                    });
-                    channelList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyDataSetChanged();
-
-                });
-                Picasso.get().load(channelList.get(position).getImage()).placeholder(R.drawable.place_holder_channel).into(holder.image_view_item_channel);
-                holder.image_view_item_channel.setOnClickListener(v -> {
-                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, holder.image_view_item_channel, "imageMain");
-                    Intent in = new Intent(activity, ChannelActivity.class);
-                    in.putExtra("channel", channelList.get(holder.getAdapterPosition()));
-
-                    if(checkSUBSCRIBED()){
-                        activity.startActivity(in, activityOptionsCompat.toBundle());
-                    }else{
-
                     }
 
-
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+                    }
                 });
-                break;
+                channelList.remove(position);
+                notifyItemRemoved(position);
+                notifyDataSetChanged();
+
+            });
+            Picasso.get().load(channelList.get(position).getImage()).placeholder(R.drawable.place_holder_channel).into(holder.image_view_item_channel);
+            holder.image_view_item_channel.setOnClickListener(v -> {
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, holder.image_view_item_channel, "imageMain");
+                Intent in = new Intent(activity, ChannelActivity.class);
+                in.putExtra("channel", channelList.get(holder.getAdapterPosition()));
+                activity.startActivity(in, activityOptionsCompat.toBundle());
+
+            });
         }
     }
     @Override
@@ -181,12 +172,4 @@ public class ChannelAdapter  extends  RecyclerView.Adapter<RecyclerView.ViewHold
         return prefManager.getString("SUBSCRIBED").equals("TRUE") || prefManager.getString("NEW_SUBSCRIBE_ENABLED").equals("TRUE");
     }
 
-    public void selectOperation(Integer position,Integer code,View vew){
-        if(position!=null){
-            Intent in = new Intent(activity, ChannelActivity.class);
-            in.putExtra("channel", channelList.get(position));
-            activity.startActivity(in);
-        }
-
-    }
 }

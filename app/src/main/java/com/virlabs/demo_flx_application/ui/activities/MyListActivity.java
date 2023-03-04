@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +30,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import timber.log.Timber;
 
 public class MyListActivity extends AppCompatActivity {
 
@@ -43,22 +41,15 @@ public class MyListActivity extends AppCompatActivity {
     private GridLayoutManager gridLayoutManager;
     private PosterAdapter adapter;
 
-    private Integer item = 0 ;
     ArrayList<Poster> posterArrayList = new ArrayList<>();
     ArrayList<Channel> channelArrayList = new ArrayList<>();
 
     private LinearLayout linear_layout_load_my_list_activity;
 
-    private Integer lines_beetween_ads = 2 ;
-    private boolean tabletSize;
-    private Boolean native_ads_enabled = false ;
-    private PrefManager prefManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_list);
-        prefManager= new PrefManager(getApplicationContext());
 
         initView();
         initAction();
@@ -66,7 +57,9 @@ public class MyListActivity extends AppCompatActivity {
     }
 
     private void loadPosters() {
-        PrefManager prf= new PrefManager(MyListActivity.this.getApplicationContext());
+        PrefManager prf= new PrefManager(this);
+        boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
+
         if (prf.getString("LOGGED").equals("TRUE")){
                 Integer id_user=  Integer.parseInt(prf.getString("ID_USER"));
                 String   key_user=  prf.getString("TOKEN_USER");
@@ -86,90 +79,34 @@ public class MyListActivity extends AppCompatActivity {
 
                             if (channelArrayList.size()>0){
                                 posterArrayList.add(new Poster().setTypeView(3));
-                                if (native_ads_enabled){
-                                    Timber.tag("MYADS").v("ENABLED");
-                                    if (tabletSize) {
-                                        gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
-                                        Timber.tag("MYADS").v("tabletSize");
-                                        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                                            @Override
-                                            public int getSpanSize(int position) {
-                                                return ((position ) % (lines_beetween_ads + 1 ) == 0 || position == 0) ? 6 : 1;
-                                            }
-                                        });
-                                    } else {
-                                        gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
-                                        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                                            @Override
-                                            public int getSpanSize(int position) {
-                                                return ((position ) % (lines_beetween_ads + 1 ) == 0 || position == 0) ? 3 : 1;
-                                            }
-                                        });
-                                    }
-                                }else {
-                                    if (tabletSize) {
-                                        gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
-                                        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                                            @Override
-                                            public int getSpanSize(int position) {
-                                                return ( position == 0) ? 6 : 1;
-                                            }
-                                        });
-                                    } else {
-                                        gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
-                                        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                                            @Override
-                                            public int getSpanSize(int position) {
-                                                return ( position == 0) ? 3 : 1;
-                                            }
-                                        });
-                                    }
+                                if (tabletSize) {
+                                    gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
+                                    gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                                        @Override
+                                        public int getSpanSize(int position) {
+                                            return ( position == 0) ? 6 : 1;
+                                        }
+                                    });
+                                } else {
+                                    gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
+                                    gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                                        @Override
+                                        public int getSpanSize(int position) {
+                                            return ( position == 0) ? 3 : 1;
+                                        }
+                                    });
                                 }
                             }else{
-                                if (native_ads_enabled){
-                                    Timber.tag("MYADS").v("ENABLED");
-                                    if (tabletSize) {
-                                        gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
-                                        Timber.tag("MYADS").v("tabletSize");
-                                        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                                            @Override
-                                            public int getSpanSize(int position) {
-                                                return ((position  + 1) % (lines_beetween_ads  + 1  ) == 0 && position!=0) ? 6 : 1;
-                                            }
-                                        });
-                                    } else {
-                                        gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
-                                        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                                            @Override
-                                            public int getSpanSize(int position) {
-                                                return ((position  + 1) % (lines_beetween_ads + 1 ) == 0  && position!=0)  ? 3 : 1;
-                                            }
-                                        });
-                                    }
-                                }else {
-                                    if (tabletSize) {
-                                        gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
-                                    } else {
-                                        gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
-                                    }
+                                if (tabletSize) {
+                                    gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
+                                } else {
+                                    gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
                                 }
                             }
 
                             if (response.body().getPosters() !=null){
                                 for (int i = 0; i < response.body().getPosters().size(); i++) {
                                     posterArrayList.add(response.body().getPosters().get(i).setTypeView(1));
-                                    if (native_ads_enabled){
-                                        item++;
-                                        if (item.equals(lines_beetween_ads)){
-                                            item= 0;
-                                            if (prefManager.getString("ADMIN_NATIVE_TYPE").equals("ADMOB")) {
-                                                posterArrayList.add(new Poster().setTypeView(4));
-                                            }else if (prefManager.getString("ADMIN_NATIVE_TYPE").equals("MAX")){
-                                                posterArrayList.add(new Poster().setTypeView(5));
-                                            }
-                                        }
-                                    }
-
                                 }
                             }
                             if (channelArrayList.size() == 0 && posterArrayList.size() == 0){
@@ -212,18 +149,13 @@ public class MyListActivity extends AppCompatActivity {
 
 
     private void initAction() {
-
-
-
         swipe_refresh_layout_list_my_list_search.setOnRefreshListener(() -> {
-            item = 0;
             channelArrayList.clear();
             posterArrayList.clear();
             adapter.notifyDataSetChanged();
             loadPosters();
         });
         button_try_again.setOnClickListener(view -> {
-            item = 0;
             channelArrayList.clear();
             posterArrayList.clear();
             adapter.notifyDataSetChanged();
@@ -234,17 +166,6 @@ public class MyListActivity extends AppCompatActivity {
     private void initView() {
 
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
-        if (!prefManager.getString("ADMIN_NATIVE_TYPE").equals("FALSE")){
-            native_ads_enabled=true;
-            if (tabletSize) {
-                lines_beetween_ads=6*Integer.parseInt(prefManager.getString("ADMIN_NATIVE_LINES"));
-            }else{
-                lines_beetween_ads=3*Integer.parseInt(prefManager.getString("ADMIN_NATIVE_LINES"));
-            }
-        }
-        if (checkSUBSCRIBED()) {
-            native_ads_enabled=false;
-        }
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("My list");
@@ -252,7 +173,6 @@ public class MyListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.linear_layout_load_my_list_activity=findViewById(R.id.linear_layout_load_my_list_activity);
-        RelativeLayout relative_layout_load_more = findViewById(R.id.relative_layout_load_more);
         this.swipe_refresh_layout_list_my_list_search=findViewById(R.id.swipe_refresh_layout_list_my_list_search);
         button_try_again            = findViewById(R.id.button_try_again);
         image_view_empty_list       = findViewById(R.id.image_view_empty_list);
@@ -260,32 +180,10 @@ public class MyListActivity extends AppCompatActivity {
         recycler_view_activity_my_list          = findViewById(R.id.recycler_view_activity_my_list);
         adapter = new PosterAdapter(posterArrayList,channelArrayList, this,true);
 
-        if (native_ads_enabled){
-            Timber.tag("MYADS").v("ENABLED");
-            if (tabletSize) {
-                this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
-                Timber.tag("MYADS").v("tabletSize");
-                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        return ((position  + 1) % (lines_beetween_ads  + 1  ) == 0 && position!=0) ? 6 : 1;
-                    }
-                });
-            } else {
-                this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
-                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        return ((position  + 1) % (lines_beetween_ads + 1 ) == 0  && position!=0)  ? 3 : 1;
-                    }
-                });
-            }
-        }else {
-            if (tabletSize) {
-                this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
-            } else {
-                this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
-            }
+        if (tabletSize) {
+            this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
+        } else {
+            this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
         }
         recycler_view_activity_my_list.setHasFixedSize(true);
         recycler_view_activity_my_list.setAdapter(adapter);

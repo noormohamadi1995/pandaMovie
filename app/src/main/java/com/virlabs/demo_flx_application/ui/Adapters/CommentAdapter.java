@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import com.virlabs.demo_flx_application.ui.activities.SupportActivity;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentHolder> {
-    private List<Comment> commentList= new ArrayList<>();
+    private List<Comment> commentList;
     private Context context;
     public CommentAdapter(List<Comment> commentList, Context context){
         this.context=context;
@@ -50,12 +51,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
         byte[] data = Base64.decode(commentList.get(position).getContent(), Base64.DEFAULT);
         String Comment_text = "";
-        try {
-            Comment_text = new String(data, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            Comment_text = commentList.get(position).getContent();
-        }
+        Comment_text = new String(data, StandardCharsets.UTF_8);
 
         holder.text_view_name_item_comment.setText(commentList.get(position).getUser());
         Picasso.get().load(commentList.get(position).getImage()).error(R.drawable.placeholder_profile).placeholder(R.drawable.placeholder_profile).into(holder.image_view_comment_iten);

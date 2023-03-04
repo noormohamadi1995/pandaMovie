@@ -300,7 +300,7 @@ public class ChannelActivity extends AppCompatActivity {
         if (channel.getCategories()!=null){
             if (channel.getCategories().size()>0){
                 LinearLayoutManager linearLayoutManagerCategories = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-                CategoryAdapter categoryAdapter = new CategoryAdapter(channel.getCategories(), this);
+                CategoryAdapter categoryAdapter = new CategoryAdapter(channel.getCategories());
                 recycle_view_activity_channel_categories.setHasFixedSize(true);
                 recycle_view_activity_channel_categories.setAdapter(categoryAdapter);
                 recycle_view_activity_channel_categories.setLayoutManager(linearLayoutManagerCategories);
@@ -311,7 +311,7 @@ public class ChannelActivity extends AppCompatActivity {
         if (channel.getCountries()!=null){
             if (channel.getCountries().size()>0){
                 LinearLayoutManager linearLayoutManagerCountires = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-                CountryAdapter countryAdapter = new CountryAdapter(channel.getCountries(), this);
+                CountryAdapter countryAdapter = new CountryAdapter(channel.getCountries());
                 recycle_view_activity_channel_countires.setHasFixedSize(true);
                 recycle_view_activity_channel_countires.setAdapter(countryAdapter);
                 recycle_view_activity_channel_countires.setLayoutManager(linearLayoutManagerCountires);

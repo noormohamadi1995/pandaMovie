@@ -50,8 +50,6 @@ public class StripeActivity extends AppCompatActivity {
     private ProgressDialog dialog_progress;
     private String plan_name;
     private Double price;
-    private TextView text_view_activity_stripe_plan;
-    private TextView text_view_activity_stripe_price;
     private RelativeLayout payButton;
     private CardInputWidget cardInputWidget;
 
@@ -87,8 +85,8 @@ public class StripeActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        this.text_view_activity_stripe_price = (TextView) findViewById(R.id.text_view_activity_stripe_price);
-        this.text_view_activity_stripe_plan = (TextView) findViewById(R.id.text_view_activity_stripe_plan);
+        TextView text_view_activity_stripe_price = (TextView) findViewById(R.id.text_view_activity_stripe_price);
+        TextView text_view_activity_stripe_plan = (TextView) findViewById(R.id.text_view_activity_stripe_plan);
         this.payButton = findViewById(R.id.payButton);
         this.cardInputWidget = findViewById(R.id.cardInputWidget);
 
@@ -106,8 +104,6 @@ public class StripeActivity extends AppCompatActivity {
                 getApplicationContext(),
                 Objects.requireNonNull(new PrefManager(getApplicationContext()).getString("APP_STRIPE_PUBLIC_KEY"))//Your publishable key
         );
-
-
     }
 
 

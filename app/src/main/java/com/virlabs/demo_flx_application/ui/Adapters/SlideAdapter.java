@@ -29,7 +29,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class SlideAdapter extends PagerAdapter {
-    private List<Slide> slideList =new ArrayList<Slide>();
+    private List<Slide> slideList;
     private Activity activity;
 
     public SlideAdapter(Activity activity, List<Slide> stringList) {

@@ -1,5 +1,6 @@
 package com.virlabs.demo_flx_application.ui.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import es.dmoral.toasty.Toasty;
@@ -32,11 +33,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class LoadActivity extends AppCompatActivity {
-
     private PrefManager prf;
-
-
-
     private  Integer id;
     private String type;
 
@@ -109,8 +106,7 @@ public class LoadActivity extends AppCompatActivity {
 
 
     private void checkAccount() {
-
-        Integer version = -1;
+        int version = -1;
         try {
             PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
             version = pInfo.versionCode;
@@ -118,9 +114,9 @@ public class LoadActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (version!=-1){
-            Integer id_user = 0;
+            int id_user = 0;
 
-            if (prf.getString("LOGGED").toString().equals("TRUE")) {
+            if (prf.getString("LOGGED").equals("TRUE")) {
                 id_user = Integer.parseInt(prf.getString("ID_USER"));
             }
             Retrofit retrofit = apiClient.getClient();
@@ -128,7 +124,7 @@ public class LoadActivity extends AppCompatActivity {
             Call<ApiResponse> call = service.check(version,id_user);
             call.enqueue(new Callback<ApiResponse>() {
                 @Override
-                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
                     if (response.isSuccessful()){
                         for (int i = 0; i < response.body().getValues().size(); i++) {
                             if ( response.body().getValues().get(i).getName().equals("ADMIN_REWARDED_ADMOB_ID") ){
@@ -261,31 +257,27 @@ public class LoadActivity extends AppCompatActivity {
                                 builder.setTitle("New Update")
                                         //.setMessage(response.body().getValue())
                                         .setView(v)
-                                        .setPositiveButton(getResources().getString(R.string.update_now), new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                final String appPackageName=getApplication().getPackageName();
-                                                try {
-                                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                                } catch (android.content.ActivityNotFoundException anfe) {
-                                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
-                                                }
-                                                finish();
+                                        .setPositiveButton(getResources().getString(R.string.update_now), (dialog, which) -> {
+                                            final String appPackageName=getApplication().getPackageName();
+                                            try {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                            } catch (android.content.ActivityNotFoundException anfe) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
                                             }
+                                            finish();
                                         })
-                                        .setNegativeButton(getResources().getString(R.string.skip), new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (!prf.getString("first").equals("true")){
-                                                    Intent intent = new Intent(LoadActivity.this,IntroActivity.class);
-                                                    startActivity(intent);
-                                                    overridePendingTransition(R.anim.enter, R.anim.exit);
-                                                    finish();
-                                                    prf.setString("first","true");
-                                                }else{
-                                                    Intent intent = new Intent(LoadActivity.this,HomeActivity.class);
-                                                    startActivity(intent);
-                                                    overridePendingTransition(R.anim.enter, R.anim.exit);
-                                                    finish();
-                                                }
+                                        .setNegativeButton(getResources().getString(R.string.skip), (dialog, which) -> {
+                                            if (!prf.getString("first").equals("true")){
+                                                Intent intent = new Intent(LoadActivity.this,IntroActivity.class);
+                                                startActivity(intent);
+                                                overridePendingTransition(R.anim.enter, R.anim.exit);
+                                                finish();
+                                                prf.setString("first","true");
+                                            }else{
+                                                Intent intent = new Intent(LoadActivity.this,HomeActivity.class);
+                                                startActivity(intent);
+                                                overridePendingTransition(R.anim.enter, R.anim.exit);
+                                                finish();
                                             }
                                         })
                                         .setCancelable(false)
@@ -378,9 +370,6 @@ public class LoadActivity extends AppCompatActivity {
         }
 
     }
-
-
-
 
     public void getPoster(){
 

@@ -28,8 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class DownloadedAdapter extends   RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final DownloadListener downloadListener;
-    private List<DownloadItem> downloadItemList;
-    private Activity activity;
+    private final List<DownloadItem> downloadItemList;
+    private final Activity activity;
     public DownloadedAdapter(List<DownloadItem> downloadItemList, Activity activity,DownloadListener downloadListener) {
         this.downloadItemList = downloadItemList;
         this.activity = activity;
@@ -85,7 +85,7 @@ public class DownloadedAdapter extends   RecyclerView.Adapter<RecyclerView.ViewH
                                             activity.getApplicationContext()
                                                     .getPackageName() + ".provider", file);
                                     ContentResolver contentResolver = activity.getContentResolver();
-                                    int deletefile = contentResolver.delete(imageUri, null, null);
+                                    contentResolver.delete(imageUri, null, null);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -161,17 +161,17 @@ public class DownloadedAdapter extends   RecyclerView.Adapter<RecyclerView.ViewH
         return downloadItemList.get(position).getTypeView();
     }
     private String fileExt(String url) {
-        if (url.indexOf("?") > -1) {
+        if (url.contains("?")) {
             url = url.substring(0, url.indexOf("?"));
         }
         if (url.lastIndexOf(".") == -1) {
             return null;
         } else {
             String ext = url.substring(url.lastIndexOf(".") + 1);
-            if (ext.indexOf("%") > -1) {
+            if (ext.contains("%")) {
                 ext = ext.substring(0, ext.indexOf("%"));
             }
-            if (ext.indexOf("/") > -1) {
+            if (ext.contains("/")) {
                 ext = ext.substring(0, ext.indexOf("/"));
             }
             return ext.toLowerCase();

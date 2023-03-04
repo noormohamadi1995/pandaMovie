@@ -35,8 +35,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class MoviesFragment extends Fragment {
-
-
     private View view;
     private RelativeLayout relative_layout_movies_fragement_filtres_button;
     private RelativeLayout card_view_movies_fragement_filtres_layout;
@@ -140,9 +138,6 @@ public class MoviesFragment extends Fragment {
     }
 
     private void initActon() {
-
-
-
         this.relative_layout_movies_fragement_filtres_button.setOnClickListener(v->{
             card_view_movies_fragement_filtres_layout.setVisibility(View.VISIBLE);
             relative_layout_movies_fragement_filtres_button.setVisibility(View.GONE);
@@ -246,7 +241,6 @@ public class MoviesFragment extends Fragment {
             {
                 if(dy > 0) //check for scroll down
                 {
-
                     visibleItemCount    = gridLayoutManager.getChildCount();
                     totalItemCount      = gridLayoutManager.getItemCount();
                     pastVisiblesItems   = gridLayoutManager.findFirstVisibleItemPosition();

@@ -428,7 +428,7 @@ public class MovieActivity extends AppCompatActivity {
 
         LinearLayoutManager linearLayoutManagerGenre = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         // adapters
-        GenreAdapter genreAdapter = new GenreAdapter(poster.getGenres(), this);
+        GenreAdapter genreAdapter = new GenreAdapter(poster.getGenres());
         recycle_view_activity_movie_genres.setHasFixedSize(true);
         recycle_view_activity_movie_genres.setAdapter(genreAdapter);
         recycle_view_activity_movie_genres.setLayoutManager(linearLayoutManagerGenre);
@@ -445,71 +445,47 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void initAction() {
-        linear_layout_movie_activity_share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                share();
-            }
-        });
-        linear_layout_activity_movie_my_list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addMyList();
-            }
-        });
+        linear_layout_movie_activity_share.setOnClickListener(v -> share());
+        linear_layout_activity_movie_my_list.setOnClickListener(v -> addMyList());
         linear_layout_movie_activity_trailer_clicked.setOnClickListener(v-> {
             playTrailer();
         });
-        floating_action_button_activity_movie_play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkSUBSCRIBED()){
-                    showSourcesPlayDialog();
+        floating_action_button_activity_movie_play.setOnClickListener(v -> {
+            showSourcesPlayDialog();
+
+/*            if (checkSUBSCRIBED()){
+                showSourcesPlayDialog();
+            }else{
+                if (poster.getPlayas().equals("2")){
+                    showDialog();
+                }else if(poster.getPlayas().equals("3") ){
+                    operationAfterAds = 200;
+                    showDialog();
                 }else{
-                    if (poster.getPlayas().equals("2")){
-                        showDialog(false);
-                    }else if(poster.getPlayas().equals("3") ){
-                        operationAfterAds = 200;
-                        showDialog(true);
-                    }else{
-                        showSourcesPlayDialog();
-                    }
+                    showSourcesPlayDialog();
                 }
-            }
+            }*/
         });
-        linear_layout_movie_activity_rate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rateDialog();
-            }
-        });
+        linear_layout_movie_activity_rate.setOnClickListener(v -> rateDialog());
         linear_layout_movie_activity_download.setOnClickListener(v->{
             if (checkSUBSCRIBED()){
                 showSourcesDownloadDialog();
             }else{
                 if (poster.getDownloadas().equals("2")){
-                    showDialog(false);
+                    showDialog();
                 }else if(poster.getDownloadas().equals("3") ){
-                    showDialog(true);
+                    showDialog();
                     operationAfterAds = 100;
                 }else{
                     showSourcesDownloadDialog();
                 }
             }
         });
-        floating_action_button_activity_movie_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCommentsDialog();
-            }
-        });
+        floating_action_button_activity_movie_comment.setOnClickListener(v -> showCommentsDialog());
     }
     public boolean checkSUBSCRIBED(){
         PrefManager prefManager= new PrefManager(getApplicationContext());
-        if (!prefManager.getString("SUBSCRIBED").equals("TRUE") && !prefManager.getString("NEW_SUBSCRIBE_ENABLED").equals("TRUE")) {
-            return false;
-        }
-        return true;
+        return prefManager.getString("SUBSCRIBED").equals("TRUE") || prefManager.getString("NEW_SUBSCRIBE_ENABLED").equals("TRUE");
     }
     public void playEmbdedSource(Source source){
         String type = (source.getUrl().contains("sendvid.com"))? "m3u8":"mp4";
@@ -534,21 +510,18 @@ public class MovieActivity extends AppCompatActivity {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(MovieActivity.this)
                             .setTitle("Choose Quality!")
-                            .setItems(name, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String url = vidURL.get(0).getUrl();
+                            .setItems(name, (dialog, which) -> {
+                                String url = vidURL.get(0).getUrl();
 
-                                    Intent intent = new Intent(MovieActivity.this,PlayerActivity.class);
-                                    intent.putExtra("id",poster.getId());
-                                    intent.putExtra("url",url);
-                                    intent.putExtra("type",type);
-                                    intent.putExtra("image",poster.getImage());
-                                    intent.putExtra("kind","movie");
-                                    intent.putExtra("title",poster.getTitle());
-                                    intent.putExtra("subtitle",poster.getTitle() + "("+poster.getYear()+")");
-                                    startActivity(intent);
-                                }
+                                Intent intent = new Intent(MovieActivity.this,PlayerActivity.class);
+                                intent.putExtra("id",poster.getId());
+                                intent.putExtra("url",url);
+                                intent.putExtra("type",type);
+                                intent.putExtra("image",poster.getImage());
+                                intent.putExtra("kind","movie");
+                                intent.putExtra("title",poster.getTitle());
+                                intent.putExtra("subtitle",poster.getTitle() + "("+poster.getYear()+")");
+                                startActivity(intent);
                             })
                             .setPositiveButton("OK", null);
                     builder.show();
@@ -587,11 +560,6 @@ public class MovieActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("No",null);
                 builder.show();
-
-
-
-                return;
-
             }
         });
 
@@ -699,57 +667,50 @@ public class MovieActivity extends AppCompatActivity {
                 rateDialog.dismiss();
             }
         });
-        buttun_send.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PrefManager prf = new PrefManager(getApplicationContext());
-                if (prf.getString("LOGGED").toString().equals("TRUE")) {
-                    Integer id_user=  Integer.parseInt(prf.getString("ID_USER"));
-                    String   key_user=  prf.getString("TOKEN_USER");
-                    Retrofit retrofit = apiClient.getClient();
-                    apiRest service = retrofit.create(apiRest.class);
-                    Call<ApiResponse> call = service.addPosterRate(id_user+"",key_user, poster.getId(), AppCompatRatingBar_dialog_rating_app.getRating());
-                    call.enqueue(new retrofit2.Callback<ApiResponse>() {
-                        @Override
-                        public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                            if (response.isSuccessful()) {
-                                if (response.body().getCode() == 200) {
-                                    Toasty.success(MovieActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                    if (response.body().getValues().size()>0){
-                                        if (response.body().getValues().get(0).getName().equals("rate") ){
-                                            linear_layout_activity_movie_rating.setVisibility(View.VISIBLE);
-                                            rating_bar_activity_movie_rating.setRating(Float.parseFloat(response.body().getValues().get(0).getValue()));
-                                        }
+        buttun_send.setOnClickListener(v -> {
+            PrefManager prf = new PrefManager(getApplicationContext());
+            if (prf.getString("LOGGED").toString().equals("TRUE")) {
+                Integer id_user=  Integer.parseInt(prf.getString("ID_USER"));
+                String   key_user=  prf.getString("TOKEN_USER");
+                Retrofit retrofit = apiClient.getClient();
+                apiRest service = retrofit.create(apiRest.class);
+                Call<ApiResponse> call = service.addPosterRate(id_user+"",key_user, poster.getId(), AppCompatRatingBar_dialog_rating_app.getRating());
+                call.enqueue(new Callback<ApiResponse>() {
+                    @Override
+                    public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body().getCode() == 200) {
+                                Toasty.success(MovieActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                if (response.body().getValues().size()>0){
+                                    if (response.body().getValues().get(0).getName().equals("rate") ){
+                                        linear_layout_activity_movie_rating.setVisibility(View.VISIBLE);
+                                        rating_bar_activity_movie_rating.setRating(Float.parseFloat(response.body().getValues().get(0).getValue()));
                                     }
-                                } else {
-                                    Toasty.error(MovieActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
+                            } else {
+                                Toasty.error(MovieActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            rateDialog.dismiss();
                         }
-                        @Override
-                        public void onFailure(Call<ApiResponse> call, Throwable t) {
-                            rateDialog.dismiss();
-                        }
-                    });
-                } else {
-                    rateDialog.dismiss();
-                    Intent intent = new Intent(MovieActivity.this,LoginActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                        rateDialog.dismiss();
+                    }
+                    @Override
+                    public void onFailure(Call<ApiResponse> call, Throwable t) {
+                        rateDialog.dismiss();
+                    }
+                });
+            } else {
+                rateDialog.dismiss();
+                Intent intent = new Intent(MovieActivity.this,LoginActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
 
-                }
             }
         });
-        rateDialog.setOnKeyListener(new Dialog.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface arg0, int keyCode,
-                                 KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    rateDialog.dismiss();
-                }
-                return true;
+        rateDialog.setOnKeyListener((arg0, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                rateDialog.dismiss();
             }
+            return true;
         });
         rateDialog.show();
 
@@ -826,97 +787,89 @@ public class MovieActivity extends AppCompatActivity {
             }
         });
 
-        image_view_comment_dialog_add_comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edit_text_comment_dialog_add_comment.getText().length()>0){
-                    PrefManager prf= new PrefManager(MovieActivity.this.getApplicationContext());
-                    if (prf.getString("LOGGED").toString().equals("TRUE")){
-                        Integer id_user=  Integer.parseInt(prf.getString("ID_USER"));
-                        String   key_user=  prf.getString("TOKEN_USER");
-                        byte[] data = new byte[0];
-                        String comment_final ="";
-                        try {
-                            data = edit_text_comment_dialog_add_comment.getText().toString().getBytes("UTF-8");
-                            comment_final = Base64.encodeToString(data, Base64.DEFAULT);
-                        } catch (UnsupportedEncodingException e) {
-                            comment_final = edit_text_comment_dialog_add_comment.getText().toString();
-                            e.printStackTrace();
-                        }
-                        progress_bar_comment_dialog_add_comment.setVisibility(View.VISIBLE);
-                        image_view_comment_dialog_add_comment.setVisibility(View.GONE);
-                        Retrofit retrofit = apiClient.getClient();
-                        apiRest service = retrofit.create(apiRest.class);
-                        Call<ApiResponse> call = service.addPosterComment(id_user+"",key_user,poster.getId(),comment_final);
-                        call.enqueue(new Callback<ApiResponse>() {
-                            @Override
-                            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                                if (response.isSuccessful()){
-                                    if (response.body().getCode()==200){
-                                        recycler_view_comment_dialog_comments.setVisibility(View.VISIBLE);
-                                        image_view_comment_dialog_empty.setVisibility(View.GONE);
-                                        Toasty.success(MovieActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                        edit_text_comment_dialog_add_comment.setText("");
-                                        String id="";
-                                        String content="";
-                                        String user="";
-                                        String image="";
-
-                                        for (int i=0;i<response.body().getValues().size();i++){
-                                            if (response.body().getValues().get(i).getName().equals("id")){
-                                                id=response.body().getValues().get(i).getValue();
-                                            }
-                                            if (response.body().getValues().get(i).getName().equals("content")){
-                                                content=response.body().getValues().get(i).getValue();
-                                            }
-                                            if (response.body().getValues().get(i).getName().equals("user")){
-                                                user=response.body().getValues().get(i).getValue();
-                                            }
-                                            if (response.body().getValues().get(i).getName().equals("image")){
-                                                image=response.body().getValues().get(i).getValue();
-                                            }
-                                        }
-                                        Comment comment= new Comment();
-                                        comment.setId(Integer.parseInt(id));
-                                        comment.setUser(user);
-                                        comment.setContent(content);
-                                        comment.setImage(image);
-                                        comment.setEnabled(true);
-                                        comment.setCreated(getResources().getString(R.string.now_time));
-                                        commentList.add(comment);
-                                        commentAdapter.notifyDataSetChanged();
-                                        text_view_comment_dialog_count.setText(commentList.size()+" Comments");
-
-                                    }else{
-                                        Toasty.error(MovieActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                                recycler_view_comment_dialog_comments.scrollToPosition(recycler_view_comment_dialog_comments.getAdapter().getItemCount()-1);
-                                recycler_view_comment_dialog_comments.scrollToPosition(recycler_view_comment_dialog_comments.getAdapter().getItemCount()-1);
-                                commentAdapter.notifyDataSetChanged();
-                                progress_bar_comment_dialog_add_comment.setVisibility(View.GONE);
-                                image_view_comment_dialog_add_comment.setVisibility(View.VISIBLE);
-                            }
-                            @Override
-                            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                                progress_bar_comment_dialog_add_comment.setVisibility(View.GONE);
-                                image_view_comment_dialog_add_comment.setVisibility(View.VISIBLE);
-                            }
-                        });
-                    }else{
-                        Intent intent = new Intent(MovieActivity.this,LoginActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+        image_view_comment_dialog_add_comment.setOnClickListener(v -> {
+            if (edit_text_comment_dialog_add_comment.getText().length()>0){
+                PrefManager prf= new PrefManager(MovieActivity.this.getApplicationContext());
+                if (prf.getString("LOGGED").toString().equals("TRUE")){
+                    Integer id_user=  Integer.parseInt(prf.getString("ID_USER"));
+                    String   key_user=  prf.getString("TOKEN_USER");
+                    byte[] data = new byte[0];
+                    String comment_final ="";
+                    try {
+                        data = edit_text_comment_dialog_add_comment.getText().toString().getBytes("UTF-8");
+                        comment_final = Base64.encodeToString(data, Base64.DEFAULT);
+                    } catch (UnsupportedEncodingException e) {
+                        comment_final = edit_text_comment_dialog_add_comment.getText().toString();
+                        e.printStackTrace();
                     }
+                    progress_bar_comment_dialog_add_comment.setVisibility(View.VISIBLE);
+                    image_view_comment_dialog_add_comment.setVisibility(View.GONE);
+                    Retrofit retrofit1 = apiClient.getClient();
+                    apiRest service1 = retrofit1.create(apiRest.class);
+                    Call<ApiResponse> call1 = service1.addPosterComment(id_user+"",key_user,poster.getId(),comment_final);
+                    call1.enqueue(new Callback<ApiResponse>() {
+                        @Override
+                        public void onResponse(Call<ApiResponse> call1, Response<ApiResponse> response) {
+                            if (response.isSuccessful()){
+                                if (response.body().getCode()==200){
+                                    recycler_view_comment_dialog_comments.setVisibility(View.VISIBLE);
+                                    image_view_comment_dialog_empty.setVisibility(View.GONE);
+                                    Toasty.success(MovieActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                    edit_text_comment_dialog_add_comment.setText("");
+                                    String id="";
+                                    String content="";
+                                    String user="";
+                                    String image="";
+
+                                    for (int i=0;i<response.body().getValues().size();i++){
+                                        if (response.body().getValues().get(i).getName().equals("id")){
+                                            id=response.body().getValues().get(i).getValue();
+                                        }
+                                        if (response.body().getValues().get(i).getName().equals("content")){
+                                            content=response.body().getValues().get(i).getValue();
+                                        }
+                                        if (response.body().getValues().get(i).getName().equals("user")){
+                                            user=response.body().getValues().get(i).getValue();
+                                        }
+                                        if (response.body().getValues().get(i).getName().equals("image")){
+                                            image=response.body().getValues().get(i).getValue();
+                                        }
+                                    }
+                                    Comment comment= new Comment();
+                                    comment.setId(Integer.parseInt(id));
+                                    comment.setUser(user);
+                                    comment.setContent(content);
+                                    comment.setImage(image);
+                                    comment.setEnabled(true);
+                                    comment.setCreated(getResources().getString(R.string.now_time));
+                                    commentList.add(comment);
+                                    commentAdapter.notifyDataSetChanged();
+                                    text_view_comment_dialog_count.setText(commentList.size()+" Comments");
+
+                                }else{
+                                    Toasty.error(MovieActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            recycler_view_comment_dialog_comments.scrollToPosition(recycler_view_comment_dialog_comments.getAdapter().getItemCount()-1);
+                            recycler_view_comment_dialog_comments.scrollToPosition(recycler_view_comment_dialog_comments.getAdapter().getItemCount()-1);
+                            commentAdapter.notifyDataSetChanged();
+                            progress_bar_comment_dialog_add_comment.setVisibility(View.GONE);
+                            image_view_comment_dialog_add_comment.setVisibility(View.VISIBLE);
+                        }
+                        @Override
+                        public void onFailure(Call<ApiResponse> call1, Throwable t) {
+                            progress_bar_comment_dialog_add_comment.setVisibility(View.GONE);
+                            image_view_comment_dialog_add_comment.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }else{
+                    Intent intent = new Intent(MovieActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                 }
             }
         });
-        image_view_comment_dialog_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        image_view_comment_dialog_close.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
     }
 
@@ -939,11 +892,11 @@ public class MovieActivity extends AppCompatActivity {
             }else {
 
                 if (downloadableList.get(0).getPremium().equals("2")) {
-                    showDialog(false);
+                    showDialog();
                 } else if (downloadableList.get(0).getPremium().equals("3")) {
                     operationAfterAds = 400;
                     current_position_download = 0;
-                    showDialog(true);
+                    showDialog();
                 } else {
                     if (!downloadableList.get(0).getExternal()) {
                         DownloadSource(downloadableList.get(0));
@@ -976,22 +929,13 @@ public class MovieActivity extends AppCompatActivity {
         recycle_view_activity_dialog_sources.setAdapter(sourceDownloadAdapter);
         recycle_view_activity_dialog_sources.setLayoutManager(linearLayoutManagerDownloadSources);
 
-        relative_layout_dialog_source_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        relative_layout_dialog_source_close.setOnClickListener(v -> download_source_dialog.dismiss());
+        download_source_dialog.setOnKeyListener((arg0, keyCode, event) -> {
+            // TODO Auto-generated method stub
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
                 download_source_dialog.dismiss();
             }
-        });
-        download_source_dialog.setOnKeyListener(new Dialog.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface arg0, int keyCode,
-                                 KeyEvent event) {
-                // TODO Auto-generated method stub
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    download_source_dialog.dismiss();
-                }
-                return true;
-            }
+            return true;
         });
         download_source_dialog.show();
 
@@ -1011,11 +955,11 @@ public class MovieActivity extends AppCompatActivity {
                 }
             } else {
                 if (playSources.get(0).getPremium().equals("2")) {
-                    showDialog(false);
+                    showDialog();
                 } else if (playSources.get(0).getPremium().equals("3")) {
                     operationAfterAds = 300;
                     current_position_play = 0;
-                    showDialog(true);
+                    showDialog();
                 } else {
                     if (playSources.get(0).getExternal()) {
                         openLink(0);
@@ -1047,22 +991,13 @@ public class MovieActivity extends AppCompatActivity {
         recycle_view_activity_dialog_sources.setAdapter(sourceAdapter);
         recycle_view_activity_dialog_sources.setLayoutManager(linearLayoutManagerSources);
 
-        relative_layout_dialog_source_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        relative_layout_dialog_source_close.setOnClickListener(v -> play_source_dialog.dismiss());
+        play_source_dialog.setOnKeyListener((arg0, keyCode, event) -> {
+            // TODO Auto-generated method stub
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
                 play_source_dialog.dismiss();
             }
-        });
-        play_source_dialog.setOnKeyListener(new Dialog.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface arg0, int keyCode,
-                                 KeyEvent event) {
-                // TODO Auto-generated method stub
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    play_source_dialog.dismiss();
-                }
-                return true;
-            }
+            return true;
         });
         play_source_dialog.show();
 
@@ -1283,7 +1218,6 @@ public class MovieActivity extends AppCompatActivity {
         }else{
             super.onBackPressed();
         }
-        return;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -1302,8 +1236,7 @@ public class MovieActivity extends AppCompatActivity {
         @Override
         public SourceHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_source_play,parent, false);
-            SourceHolder mh = new SourceAdapter.SourceHolder(v);
-            return mh;
+            return new SourceHolder(v);
         }
         @Override
         public void onBindViewHolder(SourceAdapter.SourceHolder holder,  int position_f) {
@@ -1377,11 +1310,11 @@ public class MovieActivity extends AppCompatActivity {
                     playSource(position);
                 }else{
                     if (playSources.get(position).getPremium().equals("2")) {
-                        showDialog(false);
+                        showDialog();
                     } else if (playSources.get(position).getPremium().equals("3")) {
                         operationAfterAds = 300;
                         current_position_play = position;
-                        showDialog(true);
+                        showDialog();
                     } else {
                         playSource(position);
                     }
@@ -1393,11 +1326,11 @@ public class MovieActivity extends AppCompatActivity {
                     openLink(position);
                 }else{
                     if (playSources.get(position).getPremium().equals("2")){
-                        showDialog(false);
+                        showDialog();
                     }else if(playSources.get(position).getPremium().equals("3") ){
                         operationAfterAds = 300;
                         current_position_play=  position;
-                        showDialog(true);
+                        showDialog();
                     }else{
                         openLink(position);
                     }
@@ -1508,11 +1441,11 @@ public class MovieActivity extends AppCompatActivity {
                     DownloadSource(downloadableList.get(position));
                 }else {
                     if (downloadableList.get(position).getPremium().equals("2")) {
-                        showDialog(false);
+                        showDialog();
                     } else if (downloadableList.get(position).getPremium().equals("3")) {
                         operationAfterAds = 400;
                         current_position_download = position;
-                        showDialog(true);
+                        showDialog();
                     } else {
                         DownloadSource(downloadableList.get(position));
                     }
@@ -1524,11 +1457,11 @@ public class MovieActivity extends AppCompatActivity {
                     openDownloadLink(position);
                 }else {
                     if (downloadableList.get(position).getPremium().equals("2")) {
-                        showDialog(false);
+                        showDialog();
                     } else if (downloadableList.get(position).getPremium().equals("3")) {
                         operationAfterAds = 400;
                         current_position_download = position;
-                        showDialog(true);
+                        showDialog();
                     } else {
                         openDownloadLink(position);
                     }
@@ -1819,7 +1752,7 @@ public class MovieActivity extends AppCompatActivity {
             _e.printStackTrace();
         }
     }
-    public void showDialog(Boolean withAds){
+    public void showDialog(){
         this.dialog = new Dialog(this,
                 R.style.Theme_Dialog);
 
@@ -1837,9 +1770,6 @@ public class MovieActivity extends AppCompatActivity {
         final   PrefManager prf= new PrefManager(getApplicationContext());
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dialog_subscribe);
-
-        RelativeLayout relative_layout_watch_ads=(RelativeLayout) dialog.findViewById(R.id.relative_layout_watch_ads);
-        TextView text_view_watch_ads=(TextView) dialog.findViewById(R.id.text_view_watch_ads);
 
         TextView text_view_policy_2=(TextView) dialog.findViewById(R.id.text_view_policy_2);
         TextView text_view_policy=(TextView) dialog.findViewById(R.id.text_view_policy);
@@ -1867,16 +1797,16 @@ public class MovieActivity extends AppCompatActivity {
 
         RelativeLayout relative_layout_select_method=(RelativeLayout) dialog.findViewById(R.id.relative_layout_select_method);
 
-        if (prf.getString("APP_STRIPE_ENABLED").toString().equals("FALSE")){
+        if (prf.getString("APP_STRIPE_ENABLED").equals("FALSE")){
             card_view_credit_card.setVisibility(View.GONE);
         }
-        if (prf.getString("APP_PAYPAL_ENABLED").toString().equals("FALSE")){
+        if (prf.getString("APP_PAYPAL_ENABLED").equals("FALSE")){
             card_view_paypal.setVisibility(View.GONE);
         }
-        if (prf.getString("APP_CASH_ENABLED").toString().equals("FALSE")){
+        if (prf.getString("APP_CASH_ENABLED").equals("FALSE")){
             card_view_cash.setVisibility(View.GONE);
         }
-        if (prf.getString("APP_GPLAY_ENABLED").toString().equals("FALSE")){
+        if (prf.getString("APP_GPLAY_ENABLED").equals("FALSE")){
             card_view_gpay.setVisibility(View.GONE);
         }
         relative_layout_select_method.setOnClickListener(v->{
@@ -1884,27 +1814,24 @@ public class MovieActivity extends AppCompatActivity {
                 Toasty.error(getApplicationContext(), getResources().getString(R.string.select_payment_method), Toast.LENGTH_LONG).show();
                 return;
             }
-            switch (payment_methode_id){
-                case "gp" :
-                    subscribe();
+            if ("gp".equals(payment_methode_id)) {
+                subscribe();
+                dialog.dismiss();
+            } else {
+                PrefManager prf1 = new PrefManager(getApplicationContext());
+                if (prf1.getString("LOGGED").equals("TRUE")) {
+                    Intent intent = new Intent(getApplicationContext(), PlansActivity.class);
+                    intent.putExtra("method", payment_methode_id);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                     dialog.dismiss();
-                    break;
-                default:
-                    PrefManager prf1= new PrefManager(getApplicationContext());
-                    if (prf1.getString("LOGGED").toString().equals("TRUE")){
-                        Intent intent  =  new Intent(getApplicationContext(), PlansActivity.class);
-                        intent.putExtra("method",payment_methode_id);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-                        dialog.dismiss();
 
-                    }else{
-                        Intent intent= new Intent(MovieActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
-                    }
-                    dialog.dismiss();
-                    break;
+                } else {
+                    Intent intent = new Intent(MovieActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }
+                dialog.dismiss();
             }
         });
 

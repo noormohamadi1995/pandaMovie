@@ -13,17 +13,15 @@ import java.util.List;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class GenreAdapter extends  RecyclerView.Adapter<GenreAdapter.GenreHolder>{
-    private List<Genre> genreList;
-    private Activity activity;
-    public GenreAdapter(List<Genre> genreList, Activity activity) {
+    private final List<Genre> genreList;
+
+    public GenreAdapter(List<Genre> genreList) {
         this.genreList = genreList;
-        this.activity = activity;
     }
     @Override
     public GenreAdapter.GenreHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_genre , null);
-        GenreAdapter.GenreHolder mh = new GenreAdapter.GenreHolder(v);
-        return mh;
+        return new GenreHolder(v);
     }
     @Override
     public void onBindViewHolder(GenreAdapter.GenreHolder holder, final int position) {

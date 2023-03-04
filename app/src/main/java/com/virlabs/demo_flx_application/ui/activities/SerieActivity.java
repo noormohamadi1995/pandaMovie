@@ -466,7 +466,7 @@ public class SerieActivity extends AppCompatActivity implements PlaylistDownload
 
         LinearLayoutManager linearLayoutManagerGenre = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         // adapters
-        GenreAdapter genreAdapter = new GenreAdapter(poster.getGenres(), this);
+        GenreAdapter genreAdapter = new GenreAdapter(poster.getGenres());
         recycle_view_activity_serie_genres.setHasFixedSize(true);
         recycle_view_activity_serie_genres.setAdapter(genreAdapter);
         recycle_view_activity_serie_genres.setLayoutManager(linearLayoutManagerGenre);

@@ -75,7 +75,6 @@ public class PlansActivity extends AppCompatActivity {
     private RelativeLayout relative_layout_loading;
     private RecyclerView recycler_view_plans;
     private RelativeLayout relative_layout_select_plan;
-    private RelativeLayout relative_layout_select_plan_pp;
 
     private GridLayoutManager gridLayoutManager;
     private final List<Plan> planList = new ArrayList<>();
@@ -84,8 +83,6 @@ public class PlansActivity extends AppCompatActivity {
 
 
     private static final int PAYPAL_REQUEST_CODE = 7777;
-
-    private static CheckoutConfig config ;
 
     private String method = "null";
     private ProgressDialog dialog_progress;
@@ -102,11 +99,11 @@ public class PlansActivity extends AppCompatActivity {
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            config = new CheckoutConfig(
+            CheckoutConfig config = new CheckoutConfig(
                     getApplication(),
                     prf.getString("APP_PAYPAL_CLIENT_ID"),
                     Environment.SANDBOX,
-                    getResources().getString(R.string.package_name_without_underscores)+"://paypalpay",
+                    getResources().getString(R.string.package_name_without_underscores) + "://paypalpay",
                     CurrencyCode.valueOf(new PrefManager(getApplicationContext()).getString("APP_CURRENCY").toUpperCase()),
                     UserAction.PAY_NOW,
                     PaymentButtonIntent.CAPTURE,
@@ -127,7 +124,7 @@ public class PlansActivity extends AppCompatActivity {
     private void initView() {
             this.payPalButton = findViewById(R.id.payPalButton);
 
-            this.relative_layout_select_plan_pp = findViewById(R.id.relative_layout_select_plan_pp);
+        RelativeLayout relative_layout_select_plan_pp = findViewById(R.id.relative_layout_select_plan_pp);
             this.text_view_activity_plans_method = findViewById(R.id.text_view_activity_plans_method);
             this.relative_layout_select_plan = findViewById(R.id.relative_layout_select_plan);
             this.relative_layout_plans = findViewById(R.id.relative_layout_plans);
@@ -162,18 +159,13 @@ public class PlansActivity extends AppCompatActivity {
     }
 
     private void initAction() {
-
         PrefManager prf= new PrefManager(PlansActivity.this.getApplicationContext());
-        Integer id_user=  Integer.parseInt(prf.getString("ID_USER"));
-        if (prf.getString("LOGGED").toString().equals("TRUE")){
+        int id_user=  Integer.parseInt(prf.getString("ID_USER"));
+        if (prf.getString("LOGGED").equals("TRUE")){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 payPalButton.setup(
                         createOrderActions -> {
-
-
                             DecimalFormat df = new DecimalFormat("0.00");
-
-
                             ArrayList purchaseUnits = new ArrayList<>();
                             purchaseUnits.add(
                                     new PurchaseUnit.Builder()
@@ -326,8 +318,7 @@ public class PlansActivity extends AppCompatActivity {
         @Override
         public PlanHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_plan,parent, false);
-            PlanHolder mh = new PlanHolder(v);
-            return mh;
+            return new PlanHolder(v);
         }
         @Override
         public void onBindViewHolder(PlanHolder holder, final int position) {

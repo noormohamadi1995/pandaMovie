@@ -38,12 +38,10 @@ public class HomeFragment extends Fragment {
     private HomeAdapter homeAdapter;
 
     private Genre my_genre_list;
-    private List<Data> dataList=new ArrayList<>();
-    private GridLayoutManager gridLayoutManager;
+    private final List<Data> dataList=new ArrayList<>();
     private Button button_try_again;
 
     private PrefManager prefManager;
-    private Integer item = 0 ;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -148,7 +146,7 @@ public class HomeFragment extends Fragment {
         this.recycler_view_home_fragment = (RecyclerView) view.findViewById(R.id.recycler_view_home_fragment);
         this.button_try_again = (Button) view.findViewById(R.id.button_try_again);
 
-        this.gridLayoutManager=  new GridLayoutManager(requireContext(),1,RecyclerView.VERTICAL,false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 1, RecyclerView.VERTICAL, false);
 
 
         this.homeAdapter =new HomeAdapter(dataList,getActivity());

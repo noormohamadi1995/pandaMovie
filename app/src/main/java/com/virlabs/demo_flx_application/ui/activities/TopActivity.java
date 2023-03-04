@@ -196,17 +196,6 @@ public class TopActivity extends AppCompatActivity {
 
     private void initView() {
         boolean tabletSize = getResources().getBoolean(R.bool.isTablet);
-        if (!prefManager.getString("ADMIN_NATIVE_TYPE").equals("FALSE")){
-            native_ads_enabled=true;
-            if (tabletSize) {
-                lines_beetween_ads=6*Integer.parseInt(prefManager.getString("ADMIN_NATIVE_LINES"));
-            }else{
-                lines_beetween_ads=3*Integer.parseInt(prefManager.getString("ADMIN_NATIVE_LINES"));
-            }
-        }
-        if (checkSUBSCRIBED()) {
-            native_ads_enabled=false;
-        }
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         String title = "Top Rated";
@@ -228,32 +217,10 @@ public class TopActivity extends AppCompatActivity {
         recycler_view_activity_top          = findViewById(R.id.recycler_view_activity_top);
         adapter = new PosterAdapter(posterArrayList, this);
 
-        if (native_ads_enabled){
-            Log.v("MYADS","ENABLED");
-            if (tabletSize) {
-                this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
-                Log.v("MYADS","tabletSize");
-                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        return ((position  + 1) % (lines_beetween_ads  + 1  ) == 0 && position!=0) ? 6 : 1;
-                    }
-                });
-            } else {
-                this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
-                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                    @Override
-                    public int getSpanSize(int position) {
-                        return ((position  + 1) % (lines_beetween_ads + 1 ) == 0  && position!=0)  ? 3 : 1;
-                    }
-                });
-            }
-        }else {
-            if (tabletSize) {
-                this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
-            } else {
-                this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
-            }
+        if (tabletSize) {
+            this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),6,RecyclerView.VERTICAL,false);
+        } else {
+            this.gridLayoutManager=  new GridLayoutManager(getApplicationContext(),3,RecyclerView.VERTICAL,false);
         }
 
         recycler_view_activity_top.setHasFixedSize(true);
