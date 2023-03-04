@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -48,20 +48,15 @@ public class apiClient {
     public static Retrofit initClient(){
         String text = "";
         byte[] data = android.util.Base64.decode(apiClient.retrofit_id, android.util.Base64.DEFAULT);
-        try {
-            text = new String(data, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        text = new String(data, StandardCharsets.UTF_8);
 
-        Retrofit retrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .baseUrl(text)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        return retrofit;
     }
 
-    public static  void setClient(retrofit2.Response<ApiResponse> response, Activity activity, PrefManager prf){
+    public static  void setClient(retrofit2.Response<ApiResponse> response, PrefManager prf){
         if (response.isSuccessful()) {
             if (response.body().getCode().equals(202)) {
                 prf.setString("formatted","false");
@@ -98,7 +93,7 @@ public class apiClient {
                     callback.enqueue(new Callback<ApiResponse>() {
                         @Override
                         public void onResponse(Call<ApiResponse> call, retrofit2.Response<ApiResponse> response) {
-                             apiClient.setClient(response,activity,prf);
+                             apiClient.setClient(response, prf);
 
                         }
                         @Override

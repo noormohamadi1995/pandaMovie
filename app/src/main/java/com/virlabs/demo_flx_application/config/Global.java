@@ -7,7 +7,7 @@ package com.virlabs.demo_flx_application.config;
 
 
 public class Global {
-    public static final String API_URL = "https://webflix.virmana.com/api/";
+    public static final String API_URL = "https://pandamovies.app/api/";
     public static final String SECURE_KEY = "4F5A9C3D9A86FA54EACEDDD635185";
 
     public static final String Youtube_Key = "AIzaSyAephi0fVTEBXgphX7Z_WVSW8iPusDibtg"; // get it from this link  https://console.developers.google.com/apis/credentials

@@ -4,27 +4,27 @@
     <item
         android:iconTint="@color/yellow"
         android:id="@+id/l_item_home"
-        android:title="Home"
+        android:title="خانه"
         android:icon="@drawable/ic_home"/>
     <item
         android:iconTint="@color/red"
         android:id="@+id/l_item_search"
-        android:title="Movies"
+        android:title="فیلم"
         android:icon="@drawable/ic_movie"/>
     <item
         android:iconTint="@color/green"
         android:id="@+id/l_item_profile_list"
-        android:title="Series"
+        android:title="سریال"
         android:icon="@drawable/ic_tv_show"/>
 
     <item
         android:iconTint="@color/pruple"
         android:id="@+id/l_item_profileist"
-        android:title="LiveTV"
+        android:title="پخش زنده"
         android:icon="@drawable/ic_television_box"/>
     <item
         android:iconTint="@color/orange"
         android:id="@+id/l_ite_profi"
-        android:title="@string/Downloaded"
+        android:title="دانلود شده ها"
         android:icon="@drawable/ic_file_download"/>
 </menu>

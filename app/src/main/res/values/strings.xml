@@ -1,99 +1,95 @@
 <resources>
-    <string name="app_name">Demo App</string>
+    <string name="app_name">پاندا موویز</string>
     <string name="publisher_id">pub-3940256099942544</string>
 
-    <string name="facebook_app_id">2703176636427041</string>
     <string name="fb_login_protocol_scheme">fb2703176636427041</string>
     <string name="package_name_without_underscores">com.virlabs.demo.flx.application</string>
-
-    <string name="unity_ads_app_id">21124</string>
-    <string name="app_lovin_id">nIcO_boo7GMMZ2XaF5P1EldmOyTNmk8X8mMWH8KV6rAsOrH3fJuwLCT1Edyh8qK_phPCWizxoIrFwguMHgn0SJ</string>
 
 
     <string name="download_foler">Flix</string>
     <string name="panel_url">flix.virmana.com</string>
     <string-array name="orders_list">
-        <item>Last Added</item>
-        <item>By Rating</item>
-        <item>By IMDb Rating</item>
-        <item>By Title</item>
-        <item>By Year</item>
-        <item>By Views</item>
+        <item>آخرین فیلم ها</item>
+        <item>بر اساس رتبه بندی</item>
+        <item>IMDB</item>
+        <item>عنوان</item>
+        <item>سال ساخت</item>
+        <item>تعداد بازدید</item>
     </string-array>
 
-    <string name="media_route_menu_title">Play On</string>
+    <string name="media_route_menu_title">پخش کن</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">تنظیمات</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="try_again">TRY AGAIN</string>
-    <string name="error_server">Check your internet connexion</string>
-    <string name="no_source_available">No source available for this content</string>
-    <string name="cancel">Cancel</string>
-    <string name="submit">Submit</string>
-    <string name="rating_done">Your rating has been submitted successfully</string>
-    <string name="write_comment">Write a comment</string>
-    <string name="comment_hidden">Hidden</string>
-    <string name="now_time">Now</string>
-    <string name="off">Off</string>
-    <string name="on">On</string>
-    <string name="loading_subtitles">Loading subtitles ... </string>
-    <string name="for_you">For you</string>
-    <string name="search_about_actors">Let\'s find your favorite content</string>
-    <string name="account_disabled">This account has been disabled</string>
-    <string name="operation_progress">Operations in progress, please wait.</string>
-    <string name="get_this_movie_here">Get this movie from link bellow  :</string>
-    <string name="get_this_tv_show_here">Get this tv show from link bellow  :</string>
+    <string name="try_again">تلاش مجدد</string>
+    <string name="error_server">اتصال به اینترنت خود را چک کنید</string>
+    <string name="no_source_available">هیچ منبع در دسترسی برای این محتوا وجود ندارد</string>
+    <string name="cancel">انصراف</string>
+    <string name="submit">تایید</string>
+    <string name="rating_done">رتبه بندی شما با موفقیت ثبت شد.</string>
+    <string name="write_comment">یک نظر بنویسید</string>
+    <string name="comment_hidden">مخفی</string>
+    <string name="now_time">الان</string>
+    <string name="off">خاموش</string>
+    <string name="on">روشن</string>
+    <string name="loading_subtitles">در حال بارگذاری زیر نویس ها... </string>
+    <string name="for_you">برای شما</string>
+    <string name="search_about_actors">محتوای مورد علاقه ی شما را پیدا می کنیم</string>
+    <string name="account_disabled">حساب شما غیر فعال شده است.</string>
+    <string name="operation_progress">در حال انجام عملیات...</string>
+    <string name="get_this_movie_here">فیلم را از لینک زیر دریافت کنید:</string>
+    <string name="get_this_tv_show_here">این برنامه را از لینک زیر دریافت کنید:</string>
 
-    <string name="get_this_serie_here">Get more series tv here</string>
-    <string name="get_this_channel_here">Get this channel from link bellow</string>
+    <string name="get_this_serie_here">سریال های بیشتری را از اینجا دریافت کنید</string>
+    <string name="get_this_channel_here">این کانال را از لینک زیر دریافت کنید</string>
 
-    <string name="file_has_been_downloaded">File has been downloaded successfully</string>
-    <string name="Downloaded">Downloaded successfully</string>
-    <string name="exit">Exit</string>
-    <string name="policy_privacy">Policy privacy</string>
-    <string name="action_rate">Rate App</string>
+    <string name="file_has_been_downloaded">دانلود فایل با موفقیت انجام شد</string>
+    <string name="Downloaded">دانلود با موفقیت انجام شد</string>
+    <string name="exit">خروج</string>
+    <string name="policy_privacy">حریم خصوصی</string>
+    <string name="action_rate">امتیاز دادن به برنامه</string>
     <string name="action_support"><![CDATA[Report bug & Help]]></string>
-    <string name="share_this_app">Share this App</string>
-    <string name="my_profile">My Profile</string>
-    <string name="Logout">Logout</string>
-    <string name="login">Login / Register</string>
-    <string name="subscribe">Subscribe</string>
-    <string name="later">Later</string>
-    <string name="please_login">Login to your account</string>
-    <string name="message_logout">You are successfully logout</string>
-    <string name="hint_name">Full Name</string>
-    <string name="update_my_profile">UPDATE MY PROFILE</string>
-    <string name="error_short_value">This value very short please enter correct value</string>
-    <string name="infos_updated_successfully">your infos has been updated successfully</string>
-    <string name="rate_this_channel">Rate this channel</string>
-    <string name="rate_this_serie_tv">Rate this Serie TV</string>
-    <string name="rate_this_movie">Rate this movie</string>
-    <string name="channel_added_fav">This channel has been added to your list</string>
-    <string name="channel_removed_fav">This channel has been removed from your list</string>
-    <string name="website">Website</string>
-    <string name="update_now">Update Now</string>
-    <string name="skip">Skip</string>
-    <string name="title_notification">Enable push notifiction</string>
-    <string name="label_notification">Receive push notification</string>
-    <string name="clear_cache">Clear Cache</string>
-    <string name="label_cache">Clear locally cached images. Currently : </string>
-    <string name="contact_us">Contact us</string>
-    <string name="version_label">Version</string>
-    <string name="enable_subtitles">Enable subtitles</string>
-    <string name="hint_email">E-mail</string>
-    <string name="hint_message">Your message</string>
-    <string name="send_support">Send Message</string>
-    <string name="message_sended">Message has been sent successfully</string>
-    <string name="error_mail_valide">Please enter a valid E-mail</string>
+    <string name="share_this_app">اشتراک گذاری</string>
+    <string name="my_profile">پروفایل</string>
+    <string name="Logout">خروج</string>
+    <string name="login">ورود / ثبت نام</string>
+    <string name="subscribe">اشتراک</string>
+    <string name="later">بعد</string>
+    <string name="please_login">ورود به حساب کاربری</string>
+    <string name="message_logout">با موفقیت خارج شدید</string>
+    <string name="hint_name">نام</string>
+    <string name="update_my_profile">به روز رسانی پروفایل</string>
+    <string name="error_short_value">مقدار ورودی نامعتبر است</string>
+    <string name="infos_updated_successfully">اطلاعات شما با موفقیت به روز شد</string>
+    <string name="rate_this_channel">امتیاز به این کانال</string>
+    <string name="rate_this_serie_tv">امتیاز به این سریال</string>
+    <string name="rate_this_movie">امتیاز به این فیلم</string>
+    <string name="channel_added_fav">شبکه با موفقیت به لیست اضافه شد.</string>
+    <string name="channel_removed_fav">شبکه با موفقیت از لیست حذف شد.</string>
+    <string name="website">وبسایت</string>
+    <string name="update_now">بروزرسانی</string>
+    <string name="skip">رد شدن</string>
+    <string name="title_notification">فعال سازی اعلانات</string>
+    <string name="label_notification">دریافت اعلانات</string>
+    <string name="clear_cache">پاک کردن حافظه</string>
+    <string name="label_cache">تصاویر ذخیره شده محلی را پاک کنید. در حال حاضر : </string>
+    <string name="contact_us">تماس با ما</string>
+    <string name="version_label">نسخه</string>
+    <string name="enable_subtitles">فعال سازی زیرنویس</string>
+    <string name="hint_email">ایمیل</string>
+    <string name="hint_message">پیام شما</string>
+    <string name="send_support">ارسال پیام</string>
+    <string name="message_sended">پیام با موفقیت ارسال شد</string>
+    <string name="error_mail_valide">لطفا ایمیل معتبر وارد کنید</string>
 
-    <string name="title_slide_1">Welcome to Flix App</string>
+    <string name="title_slide_1">به پاندا فیلم خوش امدید.</string>
     <string name="description_slide_1">Thank you for download Flix App ,Enjoy with this Amazing Android app with cool content  .</string>
 
     <string name="title_slide_2">Watch All here</string>
@@ -108,36 +104,36 @@
     <string name="title_slide_5">Watch On Big screen</string>
     <string name="description_slide_5">Cast any content Movies / Tv Series and Live TV channel to you TV and watch with comfortably</string>
 
-    <string name="dialog_text_no_ads_title">Turn Off ads</string>
-    <string name="dialog_text_no_premium_wallpapers_title">Premium Content</string>
-    <string name="dialog_text_no_premium_wallpapers_description">Get unlimited Stickerss</string>
-    <string name="dialog_text_no_ads_description">Use App more free without ads</string>
-    <string name="description_subsribte">With our pack. You can enjoy an ad-free experiance . and focus on the  essential!</string>
-    <string name="download_premium_content">Download Premium content</string>
-    <string name="play_premium_content">Play Premium content</string>
-    <string name="use_content_for_free">Now you can use this premium content for free</string>
-    <string name="hint_password">Password</string>
-    <string name="forgot_password">Forgot password ?</string>
-    <string name="password_confirm_message">The entered passwords don\'t match.</string>
-    <string name="reset_password">Reset Password</string>
+    <string name="dialog_text_no_ads_title">غیر فعال شدن تبلیغات</string>
+    <string name="dialog_text_no_premium_wallpapers_title">محتوای برتر</string>
+    <string name="dialog_text_no_premium_wallpapers_description">استیکرهای نامحدود دریافت کنید</string>
+    <string name="dialog_text_no_ads_description">از برنامه رایگان بدون تبلیغات استفاده کنید</string>
+    <string name="description_subsribte">با پک ما می توانید از یک تجربه بدون آگهی لذت ببرید. و روی موارد ضروری تمرکز کنید!</string>
+    <string name="download_premium_content">دانلود محتوای برتر</string>
+    <string name="play_premium_content">پخش محتوای برتر</string>
+    <string name="use_content_for_free">اوه شما می توانید از این محتوای برتر به صورت رایگان استفاده کنید</string>
+    <string name="hint_password">رمز عبور</string>
+    <string name="forgot_password">فراموشی رمز عبور</string>
+    <string name="password_confirm_message">رمز عبور با تکرار آن برابر نیست</string>
+    <string name="reset_password">بازیابی رمز</string>
     <string name="done">Done</string>
-    <string name="hint_reset_code">Reset code</string>
+    <string name="hint_reset_code">ارسال مجدد</string>
     <string name="i_have_the_code">I have the code</string>
-    <string name="hint_password_confirm">Confirm password</string>
-    <string name="change_password">Change Password</string>
-    <string name="new_password">New password</string>
-    <string name="confirm_new_password">Confirm new password</string>
-    <string name="old_password">Old password</string>
-    <string name="select_payment_method">Please select a payment methode</string>
-    <string name="operation_canceller">Operation has been cancelled !</string>
-    <string name="select_your_plan">Select your plan</string>
-    <string name="select_plan">Please select a subscription plan</string>
-    <string name="enter_your_payment_details">Enter your payment details</string>
-    <string name="continue_string">CONTINUE</string>
+    <string name="hint_password_confirm">تکرار رمز عبور</string>
+    <string name="change_password">تغییر رمز عبور</string>
+    <string name="new_password">رمز جدید</string>
+    <string name="confirm_new_password">تکرار رمز عبور جدید</string>
+    <string name="old_password">رمز عبور قدیم</string>
+    <string name="select_payment_method">یکی از روش های زیر را انتخاب کنید</string>
+    <string name="operation_canceller">عملیات کنسل شد!</string>
+    <string name="select_your_plan">سظح خود را انتخاب کنید</string>
+    <string name="select_plan">سطح اشتراک خود را انتخاب کنید</string>
+    <string name="enter_your_payment_details">وارد کردن جزئیات پرداخت</string>
+    <string name="continue_string">ادامه</string>
     <string name="payment_transaction_id">Payment transaction Id</string>
     <string name="other_payment_infos">Other Payment infos</string>
-    <string name="accept_privacy_policy_error">You should accept the privacy policy before login</string>
-    <string name="my_list">My List</string>
-    <string name="click_to_upload_file_here">Click to upload file here</string>
-    <string name="subscription_policy">Terms and Conditions</string>
+    <string name="accept_privacy_policy_error">شما باید حریم خصوصی را تایید کنید</string>
+    <string name="my_list">لیست من</string>
+    <string name="click_to_upload_file_here">برای آپلود فایل اینجا کلیک کنید</string>
+    <string name="subscription_policy">شرایط و ضوابط</string>
 </resources>

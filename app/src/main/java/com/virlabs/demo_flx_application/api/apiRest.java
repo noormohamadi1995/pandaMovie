@@ -31,8 +31,6 @@ import retrofit2.http.Path;
  */
 
 public interface apiRest {
-
-
     @GET("version/check/{code}/{user}/" + Global.SECURE_KEY + "/" + Global.ITEM_PURCHASE_CODE + "/")
     Call<ApiResponse> check(@Path("code") Integer code,@Path("user") Integer user);
 
